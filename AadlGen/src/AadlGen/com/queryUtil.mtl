@@ -1,0 +1,105 @@
+[comment encoding = GBK /]
+[module queryUtil('http://aadl.info/AADL/2.0')/]
+
+[comment][query public isProcess(arg0 : EClass) : Boolean
+	= invoke('AadlGen.com.src.QueryUtil', 'isProcess(org.eclipse.emf.ecore.EClass)', Sequence{arg0})
+/]
+
+[query public getComponentTypeName(arg0 : EClass) : String
+	= invoke('AadlGen.com.src.QueryUtil', 'getComponentTypeName(org.eclipse.emf.ecore.EClass)', Sequence{arg0})
+/][/comment]
+
+[query public getPackageReferenceName(p : AadlPackage, c : NamedElement) : String
+	= invoke('AadlGen.com.src.QueryUtil', 'getPackageReferenceName(org.osate.aadl2.AadlPackage, org.osate.aadl2.NamedElement)', Sequence{p, c})
+/]
+
+[query public includes(p : AadlPackage, c : Classifier) : Boolean
+	= invoke('AadlGen.com.src.QueryUtil', 'includes(org.osate.aadl2.AadlPackage, org.osate.aadl2.Classifier)', Sequence{p, c})
+/]
+
+[comment][query public hasFeatures(type : ComponentType) : Boolean
+	= invoke('AadlGen.com.src.QueryUtil', 'hasFeatures(org.osate.aadl2.ComponentType)', Sequence{type})
+/][/comment]
+
+[query public getPortLitera(port : Port) : String
+	= 
+	if port.oclIsKindOf(DataPort)
+	then 'data port' 
+	else
+		if port.oclIsKindOf(EventPort)
+		then 'event port'
+		else 'event data port'
+		endif
+	endif
+/]
+
+[query public getSubComponentLitera(component : Subcomponent) : String
+	= 
+	if component.oclIsKindOf(ProcessSubcomponent)
+		then 'process' 
+	else 
+	if component.oclIsKindOf(SystemSubcomponent)
+		then 'system'
+	else 
+	if component.oclIsKindOf(ThreadSubcomponent)
+		then 'thread'
+	else
+	if component.oclIsKindOf(DataSubcomponent)
+		then 'data'
+	else
+	if component.oclIsKindOf(DeviceSubcomponent)
+		then 'device'
+	else
+	if component.oclIsKindOf(SubprogramSubcomponent)
+		then 'subprogram'
+	else
+		'error'
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+/]
+
+[query public getSubComponentReference(p : AadlPackage, component : Subcomponent) : String
+	= 
+	if component.oclIsKindOf(ProcessSubcomponent)
+		then getPackageReferenceName(p, component.oclAsType(ProcessSubcomponent).processSubcomponentType.oclAsType(Classifier))
+	else 
+	if component.oclIsKindOf(SystemSubcomponent)
+		then getPackageReferenceName(p, component.oclAsType(SystemSubcomponent).systemSubcomponentType.oclAsType(Classifier)) 
+	else 
+	if component.oclIsKindOf(ThreadSubcomponent)
+		then getPackageReferenceName(p, component.oclAsType(ThreadSubcomponent).threadSubcomponentType.oclAsType(Classifier)) 
+	else
+	if component.oclIsKindOf(DataSubcomponent)
+		then getPackageReferenceName(p, component.oclAsType(DataSubcomponent).dataSubcomponentType.oclAsType(Classifier)) 
+	else
+		'error'
+	endif
+	endif
+	endif
+	endif
+/]
+
+[query public getSubComponentTypeName(component : Subcomponent) : String
+	= 
+	if component.oclIsKindOf(ProcessSubcomponent)
+		then component.oclAsType(ProcessSubcomponent).processSubcomponentType.name
+	else 
+	if component.oclIsKindOf(SystemSubcomponent)
+		then component.oclAsType(SystemSubcomponent).systemSubcomponentType.name
+	else 
+	if component.oclIsKindOf(ThreadSubcomponent)
+		then component.oclAsType(ThreadSubcomponent).threadSubcomponentType.name
+	else
+	if component.oclIsKindOf(DataSubcomponent)
+		then component.oclAsType(DataSubcomponent).dataSubcomponentType.name
+	else
+		'error'
+	endif
+	endif
+	endif
+	endif
+/]

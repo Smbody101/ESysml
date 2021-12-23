@@ -1,0 +1,124 @@
+[comment encoding = UTF-8 /]
+[module genApi('http://aadl.info/AADL/2.0', 'https://github.com/osate/osate2-ba.git/aadlba')]
+
+[import AadlGen::com::genTools/]
+
+[template public genImportPackage(aadlPackage : AadlPackage) ? (ownedPublicSection.importedUnit->notEmpty())]
+[for (model : ModelUnit | aadlPackage.ownedPublicSection.importedUnit)]
+[if (aadlPackage.name <> model.name)]
+with [model.name/];
+[/if]
+[/for]
+[/template]
+
+[template public genSystemType(aadlPackage : AadlPackage, system : SystemType)]
+system [system.name/][genExtension(aadlPackage, system)/]
+	[genSystemFeature(aadlPackage, system)/]
+	[genModes(aadlPackage, system)/]
+	[genAnnexSubclauses(aadlPackage, system.ownedAnnexSubclause)/]
+end [system.name/];
+[/template]
+
+[template public genSystemImplementation(aadlPackage : AadlPackage, system : SystemImplementation)]
+system implementation [system.name/][genExtension(aadlPackage, system)/]
+	[genSystemSubcomponent(aadlPackage, system)/]
+	[genConnections(system)/]
+	[genModes(aadlPackage, system)/]
+	[genAnnexSubclauses(aadlPackage, system.ownedAnnexSubclause)/]
+end [system.name/];
+[/template]
+
+[template public genBusType(aadlPackage : AadlPackage, bus : BusType)]
+bus [bus.name/][genExtension(aadlPackage, bus)/]
+	[genBusFeature(aadlPackage, bus)/]
+	[genModes(aadlPackage, bus)/]
+	[genAnnexSubclauses(aadlPackage, bus.ownedAnnexSubclause)/]
+end [bus.name/];
+[/template]
+
+[template public genDeviceType(aadlPackage : AadlPackage, device : DeviceType)]
+device [device.name/][genExtension(aadlPackage, device)/]
+	[genDeviceFeature(aadlPackage, device)/]
+	[genModes(aadlPackage, device)/]
+	[genAnnexSubclauses(aadlPackage, device.ownedAnnexSubclause)/]
+end [device.name/];
+[/template]
+
+[template public genDeviceImplementation(aadlPackage : AadlPackage, device : DeviceImplementation)]
+device implementation [device.name/][genExtension(aadlPackage, device)/]
+	[genDeviceSubcomponent(aadlPackage, device)/]
+	[genConnections(device)/]
+	[genModes(aadlPackage, device)/]
+	[genAnnexSubclauses(aadlPackage, device.ownedAnnexSubclause)/]
+end [device.name/];
+[/template]
+
+[template public genBusImplementation(aadlPackage : AadlPackage, bus : BusImplementation)]
+bus implementation [bus.name/][genExtension(aadlPackage, bus)/]
+	[genConnections(bus)/]
+	[genModes(aadlPackage, bus)/]
+	[genAnnexSubclauses(aadlPackage, bus.ownedAnnexSubclause)/]
+end [bus.name/];
+[/template]
+
+[template public genProcessType(aadlPackage : AadlPackage, process : ProcessType)]
+process [process.name/][genExtension(aadlPackage, process)/]
+	[genProcessFeature(aadlPackage, process)/]
+	[genAnnexSubclauses(aadlPackage, process.ownedAnnexSubclause)/]
+end [process.name/];
+[/template]
+
+[template public genProcessImplementation(aadlPackage : AadlPackage, process : ProcessImplementation)]
+process implementation [process.name/][genExtension(aadlPackage, process)/]
+	[genProcessSubcomponent(aadlPackage, process)/]
+	[genConnections(process)/]
+	[genAnnexSubclauses(aadlPackage, process.ownedAnnexSubclause)/]
+end [process.name/];
+[/template]
+
+[template public genThreadType(aadlPackage : AadlPackage, thread : ThreadType)]
+thread [thread.name/][genExtension(aadlPackage, thread)/]
+	[genThreadFeature(aadlPackage, thread)/]
+	[genAnnexSubclauses(aadlPackage, thread.ownedAnnexSubclause)/]
+end [thread.name/];
+[/template]
+
+[template public genThreadImplementation(aadlPackage : AadlPackage, thread : ThreadImplementation)]
+thread implementation [thread.name/][genExtension(aadlPackage, thread)/]
+	[genThreadSubcomponent(aadlPackage, thread)/]
+	[genCalls(aadlPackage, thread.ownedSubprogramCallSequence)/]
+	[genConnections(thread)/]
+	[genAnnexSubclauses(aadlPackage, thread.ownedAnnexSubclause)/]
+end [thread.name/];
+[/template]
+
+[template public genSubprogramType(aadlPackage : AadlPackage, subprogram : SubprogramType)]
+subprogram [subprogram.name/][genExtension(aadlPackage, subprogram)/]
+	[genSubprogramFeature(aadlPackage, subprogram)/]
+	[genAnnexSubclauses(aadlPackage, subprogram.ownedAnnexSubclause)/]
+end [subprogram.name/];
+[/template]
+
+[template public genSubprogramImplementation(aadlPackage : AadlPackage, subprogram : SubprogramImplementation)]
+subprogram implementation [subprogram.name/][genExtension(aadlPackage, subprogram)/]
+	[genSubprogramSubcomponent(aadlPackage, subprogram)/]
+	[genCalls(aadlPackage, subprogram.ownedSubprogramCallSequence)/]
+	[genConnections(subprogram)/]
+	[genAnnexSubclauses(aadlPackage, subprogram.ownedAnnexSubclause)/]
+end [subprogram.name/];
+[/template]
+
+[template public genDataType(aadlPackage : AadlPackage, data : DataType)]
+data [data.name/][genExtension(aadlPackage, data)/]
+	[genDataFeature(aadlPackage, data)/]
+	[genAnnexSubclauses(aadlPackage, data.ownedAnnexSubclause)/]
+end [data.name/];
+[/template]
+
+[template public genDataImplementation(aadlPackage : AadlPackage, data : DataImplementation)]
+data implementation [data.name/][genExtension(aadlPackage, data)/]
+	[genDataSubcomponent(aadlPackage, data)/]
+	[genConnections(data)/]
+	[genAnnexSubclauses(aadlPackage, data.ownedAnnexSubclause)/]
+end [data.name/];
+[/template]

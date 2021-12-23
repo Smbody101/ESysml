@@ -1,0 +1,1314 @@
+modeltype uml uses "http://www.eclipse.org/uml2/5.0.0/UML";
+modeltype ecore uses "http://www.eclipse.org/emf/2002/Ecore";
+modeltype blocks uses "http://www.eclipse.org/papyrus/sysml/1.4/SysML/Blocks";
+modeltype portandflow uses "http://www.eclipse.org/papyrus/sysml/1.4/SysML/PortsAndFlows";
+modeltype aadl2 uses "http://aadl.info/AADL/2.0";
+modeltype eaadl uses "http://smbody/esysml/2.0/ESysML/Aadl";
+modeltype eba uses "http://smbody/esysml/2.0/ESysML/BA";
+modeltype ba uses "https://github.com/osate/osate2-ba.git/aadlba";
+modeltype eem uses "http://smbody/esysml/2.0/ESysML/EM";
+modeltype emv2 uses "http://www.aadl.info/EMV2";
+
+transformation NEsysml2Aadl(in esysml : eaadl, out aadl : aadl2);
+
+property package : Dict(String, AadlPackage);
+property componentType : Dict(String, Dict(String, aadl2::ComponentType));
+property componentImplementation : Dict(String, Dict(String, aadl2::ComponentImplementation));
+
+main() {
+	prepareBaseLib();
+	esysml.objectsOfKind(eaadl::AadlModel) -> map AadlModelMapping();
+	esysml.objectsOfKind(eaadl::AadlModel) -> forEach(model){
+		model.resolveone(aadl2::AadlPackage).ownedPublicSection.importedUnit += package->values();
+	}
+}
+
+/*package mapping*/
+mapping eaadl::AadlModel::AadlModelMapping() : aadl2::AadlPackage {
+	name := self.base_Package.name;
+	ownedPublicSection := object aadl2::PublicPackageSection{};
+	self.importEMLibrary -> forEach(lib){
+		ownedPublicSection.importedUnit += lib.oclAsType(eem::ErrorModelLibrary).map ErrorModelLibraryMappingAadlPackage();
+	};
+
+	ownedPublicSection.ownedClassifier += self.ownedClassifier->selectByKind(eaadl::SystemType) -> map SystemTypeMapping();
+	ownedPublicSection.ownedClassifier += self.ownedClassifier->selectByKind(eaadl::DeviceType) -> map DeviceTypeMapping();
+	ownedPublicSection.ownedClassifier += self.ownedClassifier->selectByKind(eaadl::ProcessorType) -> map ProcessorTypeMapping();
+	ownedPublicSection.ownedClassifier += self.ownedClassifier->selectByKind(eaadl::MemoryType) -> map MemoryTypeMapping();
+	ownedPublicSection.ownedClassifier += self.ownedClassifier->selectByKind(eaadl::ProcessType) -> map ProcessTypeMapping();
+	ownedPublicSection.ownedClassifier += self.ownedClassifier->selectByKind(eaadl::ThreadType) -> map ThreadTypeMapping();
+	ownedPublicSection.ownedClassifier += self.ownedClassifier->selectByKind(eaadl::DataType) -> map DataTypeMapping();
+	ownedPublicSection.ownedClassifier += self.ownedClassifier->selectByKind(eaadl::SubprogramType) -> map SubprogramTypeMapping();
+	ownedPublicSection.ownedClassifier += self.ownedClassifier->selectByKind(eaadl::BusType) -> map BusTypeMapping();
+	
+	ownedPublicSection.ownedClassifier += self.ownedClassifier->selectByKind(eaadl::SystemImplementation) -> map SystemImplementationMapping();
+	ownedPublicSection.ownedClassifier += self.ownedClassifier->selectByKind(eaadl::DeviceImplementation) -> map DeviceImplementationMapping();
+	ownedPublicSection.ownedClassifier += self.ownedClassifier->selectByKind(eaadl::ProcessorImplementation) -> map ProcessorImplementationMapping();
+	ownedPublicSection.ownedClassifier += self.ownedClassifier->selectByKind(eaadl::MemoryImplementation) -> map MemoryImplementationMapping();
+	ownedPublicSection.ownedClassifier += self.ownedClassifier->selectByKind(eaadl::ProcessImplementation) -> map ProcessImplementationMapping();
+	ownedPublicSection.ownedClassifier += self.ownedClassifier->selectByKind(eaadl::ThreadImplementation) -> map ThreadImplementationMapping();
+	ownedPublicSection.ownedClassifier += self.ownedClassifier->selectByKind(eaadl::DataImplementation) -> map DataImplementationMapping();
+	ownedPublicSection.ownedClassifier += self.ownedClassifier->selectByKind(eaadl::SubprogramImplementation) -> map SubprogramImplementationMapping();
+	ownedPublicSection.ownedClassifier += self.ownedClassifier->selectByKind(eaadl::BusImplementation) -> map BusImplementationMapping();
+	
+	result.preparePackage();
+//	ownedPublicSection.importedUnit += package->get("PrimitiveTypes");
+	
+	log("Package " + name + " finished!");
+}
+
+/*component mapping*/
+//completed
+mapping eaadl::SystemType::SystemTypeMapping() : aadl2::SystemType {
+	name := self.base_Class.name;
+	extended := self.extended.oclAsType(eaadl::SystemType).map SystemTypeMapping();
+	
+	ownedDataPort := self.ownedport->selectByType(eaadl::DataPort) -> map DataPortMapping();
+	ownedEventPort := self.ownedport->selectByType(eaadl::EventPort) -> map EventPortMapping();
+	ownedEventDataPort := self.ownedport->selectByType(eaadl::EventDataPort) -> map EventDataPortMapping();
+	ownedDataAccess := self.ownedDataAccess -> map DataAccessMapping();
+	ownedSubprogramAccess := self.ownedSubprogramAccess -> map SubprogramAccessMapping();
+	ownedBusAccess := self.ownedBusAccess -> map BusAccessMapping();
+	
+	ownedMode := self.ownedMode.ownedMode -> Mode2Mode();
+	ownedModeTransition := self.ownedMode.ownedTransition -> map ModeTransitionMapping();
+	
+	ownedAnnexSubclause := self.ownedAnnex->selectByKind(eba::BehaviorStateMachine) -> map BehaviorStateMachineMapping();
+	ownedAnnexSubclause += self.ownedErrorModel.map ErrorModelSubclauseMapping();
+}
+//completed
+mapping eaadl::SystemImplementation::SystemImplementationMapping() : aadl2::SystemImplementation {
+	type := self.type.oclAsType(eaadl::SystemType).map SystemTypeMapping();
+	extended := self.extended.oclAsType(eaadl::SystemImplementation).map SystemImplementationMapping();
+//	if(not result.type.oclIsUndefined()){
+//		name := result.type.name + "." + self.base_Class.name;
+//	}else{
+		name := self.base_Class.name;
+//	};
+	
+	ownedMode := self.ownedMode.ownedMode -> Mode2Mode();
+	ownedModeTransition := self.ownedMode.ownedTransition -> map ModeTransitionMapping();
+	
+	ownedSystemSubcomponent := self.ownedSystemSubcomponent -> map SystemSubcomponentMapping();
+	ownedDataSubcomponent := self.ownedDataSubcomponent -> map DataSubcomponentMapping();
+	ownedDeviceSubcomponent := self.ownedDeviceSubcomponent -> map DeviceSubcomponentMapping();
+	ownedMemorySubcomponent := self.ownedMemorySubcomponent -> map MemorySubcomponentMapping();
+	ownedProcessorSubcomponent := self.ownedProcessorSubcomponent -> map ProcessorSubcomponentMapping();
+	ownedProcessSubcomponent := self.ownedProcessSubcomponent -> map ProcessSubcomponentMapping();
+	ownedSubprogramSubcomponent := self.ownedSubprogramSubcomponent -> map SubprogramSubcomponentMapping();
+	ownedBusSubcomponent := self.ownedBusSubcomponent -> map BusSubcomponentMapping();
+	
+	ownedAccessConnection := self.ownedDataAccessConnection -> map DataAccessConnectionMapping();
+	ownedAccessConnection += self.ownedSubprogramAccessConnection -> map SubprogramAccessConnectionMapping();
+	ownedAccessConnection += self.ownedBusConnection -> map BusAccessConnectionMapping();
+	ownedPortConnection := self.ownedPortConnection -> map PortConnectionMapping();
+	
+	ownedAnnexSubclause := self.ownedAnnex->selectByKind(eba::BehaviorStateMachine) -> map BehaviorStateMachineMapping();
+	ownedAnnexSubclause += self.ownedErrorModel.map ErrorModelSubclauseMapping();
+}
+//completed
+mapping eaadl::BusType::BusTypeMapping() : aadl2::BusType {
+	name := self.base_Class.name;
+	extended := self.extended.oclAsType(eaadl::SystemType).map SystemTypeMapping();
+	
+	ownedDataPort := self.ownedport->selectByType(eaadl::DataPort) -> map DataPortMapping();
+	ownedEventPort := self.ownedport->selectByType(eaadl::EventPort) -> map EventPortMapping();
+	ownedEventDataPort := self.ownedport->selectByType(eaadl::EventDataPort) -> map EventDataPortMapping();
+	ownedBusAccess := self.ownedBusAccess -> map BusAccessMapping();
+	
+	ownedMode := self.ownedMode.ownedMode -> Mode2Mode();
+	ownedModeTransition := self.ownedMode.ownedTransition -> map ModeTransitionMapping();
+	
+	ownedAnnexSubclause := self.ownedAnnex->selectByKind(eba::BehaviorStateMachine) -> map BehaviorStateMachineMapping();
+	ownedAnnexSubclause += self.ownedErrorModel.map ErrorModelSubclauseMapping();
+}
+//completed
+mapping eaadl::BusImplementation::BusImplementationMapping() : aadl2::BusImplementation {
+	type := self.type.oclAsType(eaadl::SystemType).map SystemTypeMapping();
+	extended := self.extended.oclAsType(eaadl::SystemImplementation).map SystemImplementationMapping();
+//	if(not result.type.oclIsUndefined()){
+//		name := result.type.name + "." + self.base_Class.name;
+//	}else{
+		name := self.base_Class.name;
+//	};
+	
+	ownedMode := self.ownedMode.ownedMode -> Mode2Mode();
+	ownedModeTransition := self.ownedMode.ownedTransition -> map ModeTransitionMapping();
+	
+	ownedPortConnection := self.ownedPortConnection -> map PortConnectionMapping();
+	ownedAccessConnection := self.ownedBusConnection -> map BusAccessConnectionMapping();
+	ownedAccessConnection += self.ownedBusConnection -> map BusAccessConnectionMapping();
+	
+	ownedAnnexSubclause := self.ownedAnnex->selectByKind(eba::BehaviorStateMachine) -> map BehaviorStateMachineMapping();
+	ownedAnnexSubclause += self.ownedErrorModel.map ErrorModelSubclauseMapping();
+}
+
+//completed
+mapping eaadl::DataType::DataTypeMapping() : aadl2::DataType {
+	name := self.base_Class.name;
+	extended := self.extended.oclAsType(eaadl::DataType).map DataTypeMapping();
+	ownedDataAccess := self.ownedDataAccess -> map DataAccessMapping();
+	ownedSubprogramAccess := self.ownedSubprogramAccess -> map SubprogramAccessMapping();
+	
+	ownedAnnexSubclause := self.ownedAnnex->selectByKind(eba::BehaviorStateMachine) -> map BehaviorStateMachineMapping();
+	ownedAnnexSubclause += self.ownedErrorModel.map ErrorModelSubclauseMapping();
+}
+//completed
+mapping eaadl::DataImplementation::DataImplementationMapping() : aadl2::DataImplementation {
+	type := self.type.oclAsType(eaadl::DataType).map DataTypeMapping();
+	extended := self.extended.oclAsType(eaadl::DataImplementation).map DataImplementationMapping();
+//	if(not result.type.oclIsUndefined()){
+//		name := result.type.name + "." + self.base_Class.name;
+//	}else{
+		name := self.base_Class.name;
+//	};
+	
+	ownedDataSubcomponent := self.ownedDataSubcomponent -> map DataSubcomponentMapping();
+	ownedSubprogramSubcomponent := self.ownedSubprogramSubcomponent -> map SubprogramSubcomponentMapping();
+	
+	ownedAccessConnection := self.ownedDataAccessConnection -> map DataAccessConnectionMapping();
+	ownedAccessConnection += self.ownedSubprogramAccessConnection -> map SubprogramAccessConnectionMapping();
+	
+	ownedAnnexSubclause := self.ownedAnnex->selectByKind(eba::BehaviorStateMachine) -> map BehaviorStateMachineMapping();
+	ownedAnnexSubclause += self.ownedErrorModel.map ErrorModelSubclauseMapping();
+}
+//completed
+mapping eaadl::SubprogramType::SubprogramTypeMapping() : aadl2::SubprogramType {
+	name := self.base_Activity.name;
+	extended := self.extended.oclAsType(eaadl::SubprogramType).map SubprogramTypeMapping();
+	
+	ownedEventPort := self.ownedport->selectByType(eaadl::EventPort) -> map EventPortMapping();
+	ownedEventDataPort := self.ownedport->selectByType(eaadl::EventDataPort) -> map EventDataPortMapping();
+	ownedDataAccess := self.ownedDataAccess -> map DataAccessMapping();
+	ownedSubprogramAccess := self.ownedSubprogramAccess -> map SubprogramAccessMapping();
+	
+	ownedParameter := self.ownedParameter -> map ParameterMapping();
+	
+	ownedMode := self.ownedMode.ownedMode -> Mode2Mode();
+	ownedModeTransition := self.ownedMode.ownedTransition -> map ModeTransitionMapping();
+	
+	ownedAnnexSubclause := self.ownedAnnex->selectByKind(eba::BehaviorStateMachine) -> map BehaviorStateMachineMapping();
+	ownedAnnexSubclause += self.ownedErrorModel.map ErrorModelSubclauseMapping();
+}
+//completed
+mapping eaadl::SubprogramImplementation::SubprogramImplementationMapping() : aadl2::SubprogramImplementation {
+	type := self.type.oclAsType(eaadl::SubprogramType).map SubprogramTypeMapping();
+	extended := self.extended.oclAsType(eaadl::SubprogramImplementation).map SubprogramImplementationMapping();
+//	if(not result.type.oclIsUndefined()){
+//		name := result.type.name + "." + self.base_Class.name;
+//	}else{
+		name := self.base_Activity.name;
+//	};
+	
+	ownedMode := self.ownedMode.ownedMode -> Mode2Mode();
+	ownedModeTransition := self.ownedMode.ownedTransition -> map ModeTransitionMapping();
+	
+	ownedDataSubcomponent := self.ownedDataSubcomponent -> map DataSubcomponentMapping();
+	ownedSubprogramSubcomponent := self.ownedSubprogramSubcomponent -> map SubprogramSubcomponentMapping();
+	
+	ownedParameterConnection := self.ownedParameterConnection -> map ParameterConnectionMapping();
+	ownedAccessConnection := self.ownedDataAccessConnection -> map DataAccessConnectionMapping();
+	ownedAccessConnection += self.ownedSubprogramAccessConnection -> map SubprogramAccessConnectionMapping();
+	ownedPortConnection := self.ownedPortConnection -> map PortConnectionMapping();
+	
+	ownedSubprogramCallSequence := self.ownedCallSequence -> map CallSequenceMapping();
+	
+	ownedAnnexSubclause := self.ownedAnnex->selectByKind(eba::BehaviorStateMachine) -> map BehaviorStateMachineMapping();
+	ownedAnnexSubclause += self.ownedErrorModel.map ErrorModelSubclauseMapping();
+}
+//completed
+mapping eaadl::DeviceType::DeviceTypeMapping() : aadl2::DeviceType {
+	name := self.base_Class.name;
+	extended := self.extended.oclAsType(eaadl::DeviceType).map DeviceTypeMapping();
+	
+	ownedDataPort := self.ownedport->selectByType(eaadl::DataPort) -> map DataPortMapping();
+	ownedEventPort := self.ownedport->selectByType(eaadl::EventPort) -> map EventPortMapping();
+	ownedEventDataPort := self.ownedport->selectByType(eaadl::EventDataPort) -> map EventDataPortMapping();
+	ownedSubprogramAccess := self.ownedSubprogramAccess -> map SubprogramAccessMapping();
+	ownedBusAccess := self.ownedBusAccess -> map BusAccessMapping();
+	
+	ownedMode := self.ownedMode.ownedMode -> Mode2Mode();
+	ownedModeTransition := self.ownedMode.ownedTransition -> map ModeTransitionMapping();
+	
+	ownedAnnexSubclause := self.ownedAnnex->selectByKind(eba::BehaviorStateMachine) -> map BehaviorStateMachineMapping();
+	ownedAnnexSubclause += self.ownedErrorModel.map ErrorModelSubclauseMapping();
+}
+//completed
+mapping eaadl::DeviceImplementation::DeviceImplementationMapping() : aadl2::DeviceImplementation {
+	type := self.type.oclAsType(eaadl::DeviceType).map DeviceTypeMapping();
+	extended := self.extended.oclAsType(eaadl::DeviceImplementation).map DeviceImplementationMapping();
+//	if(not result.type.oclIsUndefined()){
+//		name := result.type.name + "." + self.base_Class.name;
+//	}else{
+		name := self.base_Class.name;
+//	};
+	
+	ownedMode := self.ownedMode.ownedMode -> Mode2Mode();
+	ownedModeTransition := self.ownedMode.ownedTransition -> map ModeTransitionMapping();
+	
+	ownedDataSubcomponent := self.ownedDataSubcomponent -> map DataSubcomponentMapping();
+	
+	ownedBusSubcomponent := self.ownedBusSubcomponent -> map BusSubcomponentMapping();
+	
+	ownedAccessConnection += self.ownedSubprogramAccessConnection -> map SubprogramAccessConnectionMapping();
+	ownedAccessConnection += self.ownedBusConnection -> map BusAccessConnectionMapping();
+	ownedPortConnection := self.ownedPortConnection -> map PortConnectionMapping();
+	
+	ownedAnnexSubclause := self.ownedAnnex->selectByKind(eba::BehaviorStateMachine) -> map BehaviorStateMachineMapping();
+	ownedAnnexSubclause += self.ownedErrorModel.map ErrorModelSubclauseMapping();
+}
+//completed
+mapping eaadl::MemoryType::MemoryTypeMapping() : aadl2::MemoryType {
+	name := self.base_Class.name;
+	extended := self.extended.oclAsType(eaadl::MemoryType).map MemoryTypeMapping();
+	
+	ownedDataPort := self.ownedport->selectByType(eaadl::DataPort) -> map DataPortMapping();
+	ownedEventPort := self.ownedport->selectByType(eaadl::EventPort) -> map EventPortMapping();
+	ownedEventDataPort := self.ownedport->selectByType(eaadl::EventDataPort) -> map EventDataPortMapping();
+	ownedBusAccess := self.ownedBusAccess -> map BusAccessMapping();
+	
+	ownedMode := self.ownedMode.ownedMode -> Mode2Mode();
+	ownedModeTransition := self.ownedMode.ownedTransition -> map ModeTransitionMapping();
+	
+	ownedAnnexSubclause := self.ownedAnnex->selectByKind(eba::BehaviorStateMachine) -> map BehaviorStateMachineMapping();
+	ownedAnnexSubclause += self.ownedErrorModel.map ErrorModelSubclauseMapping();
+}
+//completed
+mapping eaadl::MemoryImplementation::MemoryImplementationMapping() : aadl2::MemoryImplementation {
+	type := self.type.oclAsType(eaadl::MemoryType).map MemoryTypeMapping();
+	extended := self.extended.oclAsType(eaadl::MemoryImplementation).map MemoryImplementationMapping();
+//	if(not result.type.oclIsUndefined()){
+//		name := result.type.name + "." + self.base_Class.name;
+//	}else{
+		name := self.base_Class.name;
+//	};
+	
+	ownedMode := self.ownedMode.ownedMode -> Mode2Mode();
+	ownedModeTransition := self.ownedMode.ownedTransition -> map ModeTransitionMapping();
+	
+	ownedMemorySubcomponent := self.ownedMemorySubcomponent -> map MemorySubcomponentMapping();
+	ownedBusSubcomponent := self.ownedBusSubcomponent -> map BusSubcomponentMapping();
+
+	ownedAccessConnection += self.ownedBusConnection -> map BusAccessConnectionMapping();
+	ownedPortConnection := self.ownedPortConnection -> map PortConnectionMapping();
+	
+	ownedAnnexSubclause := self.ownedAnnex->selectByKind(eba::BehaviorStateMachine) -> map BehaviorStateMachineMapping();
+	ownedAnnexSubclause += self.ownedErrorModel.map ErrorModelSubclauseMapping();
+}
+//completed
+mapping eaadl::ProcessorType::ProcessorTypeMapping() : aadl2::ProcessorType {
+	name := self.base_Class.name;
+	extended := self.extended.oclAsType(eaadl::ProcessorType).map ProcessorTypeMapping();
+	
+	ownedDataPort := self.ownedport->selectByType(eaadl::DataPort) -> map DataPortMapping();
+	ownedEventPort := self.ownedport->selectByType(eaadl::EventPort) -> map EventPortMapping();
+	ownedEventDataPort := self.ownedport->selectByType(eaadl::EventDataPort) -> map EventDataPortMapping();
+	ownedSubprogramAccess := self.ownedSubprogramAccess -> map SubprogramAccessMapping();
+	ownedBusAccess := self.ownedBusAccess -> map BusAccessMapping();
+	
+	ownedMode := self.ownedMode.ownedMode -> Mode2Mode();
+	ownedModeTransition := self.ownedMode.ownedTransition -> map ModeTransitionMapping();
+	
+	ownedAnnexSubclause := self.ownedAnnex->selectByKind(eba::BehaviorStateMachine) -> map BehaviorStateMachineMapping();
+	ownedAnnexSubclause += self.ownedErrorModel.map ErrorModelSubclauseMapping();
+}
+//completed
+mapping eaadl::ProcessorImplementation::ProcessorImplementationMapping() : aadl2::ProcessorImplementation {
+	type := self.type.oclAsType(eaadl::ProcessorType).map ProcessorTypeMapping();
+	extended := self.extended.oclAsType(eaadl::ProcessorImplementation).map ProcessorImplementationMapping();
+//	if(not result.type.oclIsUndefined()){
+//		name := result.type.name + "." + self.base_Class.name;
+//	}else{
+		name := self.base_Class.name;
+//	};
+	
+	ownedMode := self.ownedMode.ownedMode -> Mode2Mode();
+	ownedModeTransition := self.ownedMode.ownedTransition -> map ModeTransitionMapping();
+	
+	ownedMemorySubcomponent := self.ownedMemorySubcomponent -> map MemorySubcomponentMapping();
+	ownedBusSubcomponent := self.ownedBusSubcomponent -> map BusSubcomponentMapping();
+	
+	ownedAccessConnection += self.ownedSubprogramAccessConnection -> map SubprogramAccessConnectionMapping();
+	ownedAccessConnection += self.ownedBusConnection -> map BusAccessConnectionMapping();
+	ownedPortConnection := self.ownedPortConnection -> map PortConnectionMapping();
+	
+	ownedAnnexSubclause := self.ownedAnnex->selectByKind(eba::BehaviorStateMachine) -> map BehaviorStateMachineMapping();
+	ownedAnnexSubclause += self.ownedErrorModel.map ErrorModelSubclauseMapping();
+}
+//completed
+mapping eaadl::ProcessType::ProcessTypeMapping() : aadl2::ProcessType {
+	name := self.base_Class.name;
+	extended := self.extended.oclAsType(eaadl::ProcessType).map ProcessTypeMapping();
+	
+	ownedDataPort := self.ownedport->selectByType(eaadl::DataPort) -> map DataPortMapping();
+	ownedEventPort := self.ownedport->selectByType(eaadl::EventPort) -> map EventPortMapping();
+	ownedEventDataPort := self.ownedport->selectByType(eaadl::EventDataPort) -> map EventDataPortMapping();
+	ownedDataAccess := self.ownedDataAccess -> map DataAccessMapping();
+	
+	ownedMode := self.ownedMode.ownedMode -> Mode2Mode();
+	ownedModeTransition := self.ownedMode.ownedTransition -> map ModeTransitionMapping();
+	
+	ownedAnnexSubclause := self.ownedAnnex->selectByKind(eba::BehaviorStateMachine) -> map BehaviorStateMachineMapping();
+	ownedAnnexSubclause += self.ownedErrorModel.map ErrorModelSubclauseMapping();
+}
+//completed
+mapping eaadl::ProcessImplementation::ProcessImplementationMapping() : aadl2::ProcessImplementation {
+	type := self.type.oclAsType(eaadl::ProcessType).map ProcessTypeMapping();
+	extended := self.extended.oclAsType(eaadl::ProcessImplementation).map ProcessImplementationMapping();
+//	if(not result.type.oclIsUndefined()){
+//		name := result.type.name + "." + self.base_Class.name;
+//	}else{
+		name := self.base_Class.name;
+//	};
+	
+	ownedMode := self.ownedMode.ownedMode -> Mode2Mode();
+	ownedModeTransition := self.ownedMode.ownedTransition -> map ModeTransitionMapping();
+	
+	ownedDataSubcomponent := self.ownedDataSubcomponent -> map DataSubcomponentMapping();
+	ownedSubprogramSubcomponent := self.ownedSubprogramSubcomponent -> map SubprogramSubcomponentMapping();
+	ownedThreadSubcomponent := self.ownedThreadSubcomponent -> map ThreadSubcomponentMapping();
+	
+	ownedAccessConnection := self.ownedDataAccessConnection -> map DataAccessConnectionMapping();
+	ownedAccessConnection += self.ownedSubprogramAccessConnection -> map SubprogramAccessConnectionMapping();
+	ownedPortConnection := self.ownedPortConnection -> map PortConnectionMapping();
+	
+	ownedAnnexSubclause := self.ownedAnnex->selectByKind(eba::BehaviorStateMachine) -> map BehaviorStateMachineMapping();
+	ownedAnnexSubclause += self.ownedErrorModel.map ErrorModelSubclauseMapping();
+}
+//completed
+mapping eaadl::ThreadType::ThreadTypeMapping() : aadl2::ThreadType {
+	name := self.base_Class.name;
+	extended := self.extended.oclAsType(eaadl::ThreadType).map ThreadTypeMapping();
+	
+	ownedDataPort := self.ownedport->selectByType(eaadl::DataPort) -> map DataPortMapping();
+	ownedEventPort := self.ownedport->selectByType(eaadl::EventPort) -> map EventPortMapping();
+	ownedEventDataPort := self.ownedport->selectByType(eaadl::EventDataPort) -> map EventDataPortMapping();
+	ownedDataAccess := self.ownedDataAccess -> map DataAccessMapping();
+	ownedSubprogramAccess := self.ownedSubprogramAccess -> map SubprogramAccessMapping();
+	
+	ownedMode := self.ownedMode.ownedMode -> Mode2Mode();
+	ownedModeTransition := self.ownedMode.ownedTransition -> map ModeTransitionMapping();
+	
+	ownedAnnexSubclause := self.ownedAnnex->selectByKind(eba::BehaviorStateMachine) -> map BehaviorStateMachineMapping();
+	ownedAnnexSubclause += self.ownedErrorModel.map ErrorModelSubclauseMapping();
+}
+//completed
+mapping eaadl::ThreadImplementation::ThreadImplementationMapping() : aadl2::ThreadImplementation {
+	type := self.type.oclAsType(eaadl::ThreadType).map ThreadTypeMapping();
+	extended := self.extended.oclAsType(eaadl::ThreadImplementation).map ThreadImplementationMapping();
+
+//	if(not result.type.oclIsUndefined()){
+//		name := result.type.name + "." + self.base_Class.name;
+//	}else{
+		name := self.base_Class.name;
+//	};
+	
+	ownedMode := self.ownedMode.ownedMode -> Mode2Mode();
+	ownedModeTransition := self.ownedMode.ownedTransition -> map ModeTransitionMapping();
+	
+	ownedDataSubcomponent := self.ownedDataSubcomponent -> map DataSubcomponentMapping();
+	ownedSubprogramSubcomponent := self.ownedSubprogramSubcomponent -> map SubprogramSubcomponentMapping();
+	
+	ownedAccessConnection := self.ownedDataAccessConnection -> map DataAccessConnectionMapping();
+	ownedAccessConnection += self.ownedSubprogramAccessConnection -> map SubprogramAccessConnectionMapping();
+	ownedPortConnection := self.ownedPortConnection -> map PortConnectionMapping();
+	ownedParameterConnection := self.ownedParameterConnection -> map ParameterConnectionMapping();
+	
+	ownedSubprogramCallSequence := self.ownedCallSequence -> map CallSequenceMapping();
+	
+	ownedAnnexSubclause := self.ownedAnnex->selectByKind(eba::BehaviorStateMachine) -> map BehaviorStateMachineMapping();
+	ownedAnnexSubclause += self.ownedErrorModel.map ErrorModelSubclauseMapping();
+}
+/*feature transfer*/
+//completed
+mapping eaadl::DataPort::DataPortMapping() : aadl2::DataPort {
+	name := self.base_Port.name;
+	dataFeatureClassifier := self.specification.type.DataClassifier2DataSubcomponentType();
+	if(dataFeatureClassifier.oclIsUndefined()){
+		self.specification.base_Class.attribute->forEach(p){
+			dataFeatureClassifier := componentType->get("PrimitiveTypes")->get(p.type.name).oclAsType(aadl2::DataType);
+		};
+	};
+	direction := self.direction.FlowDirection2DirectionType();
+}
+//completed
+mapping eaadl::EventPort::EventPortMapping() : aadl2::EventPort {
+	name := self.base_Port.name;
+	direction := self.direction.FlowDirection2DirectionType();
+}
+//completed
+mapping eaadl::EventDataPort::EventDataPortMapping() : aadl2::EventDataPort {
+	name := self.base_Port.name;
+	dataFeatureClassifier := self.specification.type.DataClassifier2DataSubcomponentType();
+	if(dataFeatureClassifier.oclIsUndefined()){
+		self.specification.base_Class.attribute->forEach(p){
+			dataFeatureClassifier := componentType->get("PrimitiveTypes")->get(p.type.name).oclAsType(aadl2::DataType);
+		};
+	};
+	direction := self.direction.FlowDirection2DirectionType();
+}
+//completed
+mapping eaadl::DataAccess::DataAccessMapping() : aadl2::DataAccess {
+	name := self.base_Port.name;
+	dataFeatureClassifier := self.specification.type.DataClassifier2DataSubcomponentType();
+	if(dataFeatureClassifier.oclIsUndefined()){
+		self.specification.base_Class.attribute->forEach(p){
+			dataFeatureClassifier := componentType->get("PrimitiveTypes")->get(p.type.name).oclAsType(aadl2::DataType);
+		};
+	};
+	kind := self.direction.FeatureDirection2AccessType();
+}
+//completed
+mapping eaadl::SubprogramAccess::SubprogramAccessMapping() : aadl2::SubprogramAccess {
+	name := self.base_Port.name;
+	subprogramFeatureClassifier := self.type.SubprogramClassifier2SubprogramSubcomponentType();
+	kind := self.direction.FeatureDirection2AccessType();
+}
+//completed
+mapping eaadl::Parameter::ParameterMapping() : aadl2::Parameter {
+	name := self.base_Parameter.name;
+	dataFeatureClassifier := self.type.DataClassifier2DataSubcomponentType();
+	if(dataFeatureClassifier.oclIsUndefined()){
+		dataFeatureClassifier := componentType->get("PrimitiveTypes")->get(self.base_Parameter.type.name).oclAsType(aadl2::DataType);
+	};
+	direction := self.direction.ParameterDirectionKind2AccessType();
+}
+//completed
+mapping eaadl::BusAccess::BusAccessMapping() : aadl2::BusAccess {
+	name := self.base_Port.name;
+	result.busFeatureClassifier := self.specification.type.BusClassifier2BusSubcomponentType();
+	kind := self.direction.FeatureDirection2AccessType();
+}
+
+/*subcomponent transfer*/
+//completed
+mapping eaadl::SystemSubcomponent::SystemSubcomponentMapping() : aadl2::SystemSubcomponent {
+	name := self.base_Property.name;
+	systemSubcomponentType := self.type.SystemClassifier2SystemSubcomponentType();
+}
+//completed
+mapping eaadl::DataSubcomponent::DataSubcomponentMapping() : aadl2::DataSubcomponent {
+	name := self.base_Property.name;
+	dataSubcomponentType := self.type.DataClassifier2DataSubcomponentType();
+}
+//completed
+mapping eaadl::DeviceSubcomponent::DeviceSubcomponentMapping() : aadl2::DeviceSubcomponent {
+	name := self.base_Property.name;
+	deviceSubcomponentType := self.type.DeviceClassifier2DeviceSubcomponentType();
+}
+//completed
+mapping eaadl::MemorySubcomponent::MemorySubcomponentMapping() : aadl2::MemorySubcomponent {
+	name := self.base_Property.name;
+	memorySubcomponentType := self.type.MemoryClassifier2MemorySubcomponentType();
+}
+//completed
+mapping eaadl::ProcessorSubcomponent::ProcessorSubcomponentMapping() : aadl2::ProcessorSubcomponent {
+	name := self.base_Property.name;
+	processorSubcomponentType := self.type.ProcessorClassifier2ProcessorSubcomponentType();
+}
+//completed
+mapping eaadl::ProcessSubcomponent::ProcessSubcomponentMapping() : aadl2::ProcessSubcomponent {
+	name := self.base_Property.name;
+	processSubcomponentType := self.type.ProcessClassifier2ProcessSubcomponentType();
+}
+//completed
+mapping eaadl::SubprogramSubcomponent::SubprogramSubcomponentMapping() : aadl2::SubprogramSubcomponent {
+	name := self.base_Property.name;
+	subprogramSubcomponentType := self.type.SubprogramClassifier2SubprogramSubcomponentType();
+}
+//completed
+mapping eaadl::ThreadSubcomponent::ThreadSubcomponentMapping() : aadl2::ThreadSubcomponent {
+	name := self.base_Property.name;
+	threadSubcomponentType := self.type.ThreadClassifier2ThreadSubcomponentType();
+}
+//completed
+mapping eaadl::BusSubcomponent::BusSubcomponentMapping() : aadl2::BusSubcomponent {
+	name := self.base_Property.name;
+	busSubcomponentType := self.type.BusClassifier2ThreadSubcomponentType();
+}
+
+/*connection transfer*/
+//completed
+mapping eaadl::DataAccessConnection::DataAccessConnectionMapping() : aadl2::AccessConnection {
+	name := self.base_Connector.name;
+	bidirectional := false;
+	accessCategory := aadl2::AccessCategory::data;
+	source := object aadl2::ConnectedElement{
+		connectionEnd := self.require.DataAccessConnectionEnd2ConnectionEnd();
+		context := self.inContext.PortAndAccessConectionContext2Context();
+	};
+	destination := object aadl2::ConnectedElement{
+		connectionEnd := self.provide.DataAccessConnectionEnd2ConnectionEnd();
+		context := self.outContext.PortAndAccessConectionContext2Context();
+	};
+}
+//completed
+mapping eaadl::SubprogramAccessConnection::SubprogramAccessConnectionMapping() : aadl2::AccessConnection {
+	name := self.base_Connector.name;
+	bidirectional := false;
+	accessCategory := aadl2::AccessCategory::subprogram;
+	source := object aadl2::ConnectedElement{
+		connectionEnd := self.require.SubprogramAccessConnectionEnd2ConnectionEnd();
+		context := self.inContext.PortAndAccessConectionContext2Context();
+	};
+	destination := object aadl2::ConnectedElement{
+		connectionEnd := self.provide.SubprogramAccessConnectionEnd2ConnectionEnd();
+		context := self.outContext.PortAndAccessConectionContext2Context();
+	};
+}
+//completed
+mapping eaadl::BusConnection::BusAccessConnectionMapping() : aadl2::AccessConnection {
+	name := self.base_Connector.name;
+	bidirectional := false;
+	accessCategory := aadl2::AccessCategory::bus;
+	source := object aadl2::ConnectedElement{
+		connectionEnd := self.require.BusAccessConnectionEnd2ConnectionEnd();
+		context := self.inContext.PortAndAccessConectionContext2Context();
+	};
+	destination := object aadl2::ConnectedElement{
+		connectionEnd := self.provide.BusAccessConnectionEnd2ConnectionEnd();
+		context := self.outContext.PortAndAccessConectionContext2Context();
+	};
+}
+
+
+
+//completed
+mapping eaadl::ParameterConnection::ParameterConnectionMapping() : aadl2::ParameterConnection {
+	name := self.base_ObjectFlow.name;
+	bidirectional := false;
+	source := object aadl2::ConnectedElement{
+		connectionEnd := self._in.ParameterConnectionEnd2ConnectionEnd();
+		context := self.inContext.ParameterConnectionContext2Context();
+	};
+	destination := object aadl2::ConnectedElement{
+		connectionEnd := self._out.ParameterConnectionEnd2ConnectionEnd();
+		context := self.outContext.ParameterConnectionContext2Context();
+	};
+}
+
+//completed
+mapping eaadl::PortConnection::PortConnectionMapping() : aadl2::PortConnection {
+	name := self.base_Connector.name;
+	bidirectional := false;
+	source := object aadl2::ConnectedElement{
+		connectionEnd := self._in.Port2Port();
+		context := self.inContext.PortAndAccessConectionContext2Context();
+	};
+	destination := object aadl2::ConnectedElement{
+		connectionEnd := self._out.Port2Port();
+		context := self.outContext.PortAndAccessConectionContext2Context();
+	};
+}
+
+/*mode trnasfer*/
+//completed
+mapping eaadl::InitialMode::InitialModeMapping() : aadl2::Mode {
+	name := self.base_Pseudostate.name;
+	initial := true;
+}
+//completed
+mapping eaadl::NormalMode::NormalModeMapping() : aadl2::Mode {
+	name := self.base_State.name;
+	initial := false;
+}
+//completed
+mapping eaadl::ModeTransition::ModeTransitionMapping() : aadl2::ModeTransition {
+	name := self.base_Transition.name;
+	source := self._from.Mode2Mode();
+	destination := self.to.Mode2Mode();
+	ownedTrigger := self.trigger -> map ModeTransitionTriggerMapping();
+}
+//completed
+mapping eaadl::ModeTransitionTrigger::ModeTransitionTriggerMapping() : aadl2::ModeTransitionTrigger {
+	triggerPort := self.port.map EventPortMapping();
+	context := self.context.ModeTransitionTriggerContext2Context();
+}
+
+/*call sequence*/
+//completed
+mapping eaadl::CallSequence::CallSequenceMapping() : aadl2::SubprogramCallSequence {
+	name := self.base_Activity.name;
+	var first : eaadl::SubprogramCall := self.first;
+	
+	while(not first.oclIsUndefined()){
+		ownedSubprogramCall += first.SubprogramCall2SubprogramCall();
+		first := first.next;
+	};
+}
+
+//completed
+mapping eaadl::SubprogramInstanceCall::SubprogramInstanceCallMapping() : aadl2::SubprogramCall {
+	name := self.base_CallBehaviorAction.name;
+	calledSubprogram := self.subprogramInstance.SubprogramInstance2CalledSubprogram();
+}
+//completed
+mapping eaadl::SubprogramInterfaceCall::SubprogramInterfaceCallMapping() : aadl2::SubprogramCall {
+	name := self.base_CallOperationAction.name;
+	calledSubprogram := self.subprogramInterface.SubprogramInterface2CalledSubprogram();
+	context := self.context.SubprogramCallContext2CalledContext();
+}
+
+/*Behavior annex*/
+//completed
+mapping eba::BehaviorStateMachine::BehaviorStateMachineMapping() : ba::BehaviorAnnex {
+	name := self.base_StateMachine.name;
+	variables := self.ownedVariable -> map VariableMapping();
+	states := self.ownedState -> map BehaviorStateMapping();
+	transitions := self.ownedTransition -> map BehaviorStateTransitionMapping();
+}
+//completed
+mapping eba::Variable::VariableMapping() : ba::BehaviorVariable {
+	name := self.name;
+	if(not self.type.oclIsUndefined()){
+		if(self.type.oclIsTypeOf(eaadl::DataType)){
+			dataClassifier := self.type.oclAsType(eaadl::DataType).map DataTypeMapping();
+		}else{
+			dataClassifier := self.type.oclAsType(eaadl::DataImplementation).map DataImplementationMapping();
+		};
+	}else if(not self.primitiveType.oclIsUndefined()){
+		dataClassifier := componentType->get("PrimitiveTypes")->get(self.primitiveType.name).oclAsType(aadl2::DataType);
+	};
+}
+//completed
+mapping eba::BehaviorState::BehaviorStateMapping() : ba::BehaviorState {
+	name := self.base_State.name;
+	initial := self.isInitial;
+	complete := self.isComplete;
+	final := self.isFinal;
+}
+//completed
+mapping eba::BehaviorStateTransition::BehaviorStateTransitionMapping() : ba::BehaviorTransition {
+	name := self.base_Transition.name;
+	sourceState := self._from.map BehaviorStateMapping();
+	destinationState := self.to.map BehaviorStateMapping();
+	condition := self.ownedCondition.TransitionConditionMapping();
+	actionBlock := object ba::BehaviorActionBlock {
+		content := self.ownedActionBlock.BehaviorActionBlock2BehaviorActions();
+	};
+}
+
+//completed
+mapping eba::BehaviorActionBlock::BehaviorActionBlockMapping() : ba::BehaviorActionSequence {
+	var first : eba::BehaviorAction := self.firstAction;
+	while(not first.oclIsUndefined()){
+		actions += first.BehaviorAction2BehaviorAction();
+		first := first.next.oclAsType(eba::BehaviorAction);
+	};
+}
+
+//completed
+mapping eba::TextCondition::TextConditionMapping() : ba::ValueExpression {
+	if(self.base_Constraint.specification.oclIsTypeOf(uml::LiteralString)){
+		 ownedComment += object aadl2::Comment {
+		 	body := self.base_Constraint.specification.oclAsType(uml::LiteralString).value;
+		 }; 
+	}
+}
+//completed
+mapping eba::DispatchCondition::DispatchConditionMapping() : ba::DispatchCondition {
+	if(self.isTimeout){
+		result.dispatchTriggerCondition := object ba::DispatchRelativeTimeout {};
+	}else{
+		result.dispatchTriggerCondition := object ba::DispatchTriggerLogicalExpression{
+			dispatchConjunctions := self.dispatchPort -> map DispatchPortMapping();
+		}; 
+	};
+}
+//completed
+mapping eaadl::EventPort::DispatchPortMapping() : ba::DispatchConjunction {
+	dispatchTriggers += self.map EventPortHolderMapping();
+}
+//completed
+mapping eaadl::EventPort::EventPortHolderMapping() : ba::EventPortHolder {
+	if(self.oclIsTypeOf(eaadl::EventPort)){
+		element := self.map EventPortMapping();
+	}else{
+		element := self.oclAsType(eaadl::EventDataPort).map EventDataPortMapping();
+	};
+}
+
+//completed
+mapping eba::SubprogramInstanceCallAction::SubprogramInstanceCallActionMapping() : ba::SubprogramHolder {
+	element := self.subprogramInstance.SubprogramInstance2CalledSubprogram().oclAsType(aadl2::NamedElement);
+	groupHolders := self.parameter -> String2GroupHolder();
+}
+//completed
+mapping eba::SubprogramInterfaceCallAction::SubprogramInterfaceCallActionMapping() : ba::SubprogramHolder {
+	element := self.subprogramInterface.SubprogramInterface2CalledSubprogram().oclAsType(aadl2::NamedElement);
+	groupHolders := self.parameter -> String2GroupHolder();
+}
+
+/*ErrorModelLibrary Mapping*/
+//completed
+mapping eem::ErrorModelLibrary::ErrorModelLibraryMappingAadlPackage() : aadl2::AadlPackage {
+	name := self.base_Package.name;
+	ownedPublicSection := object aadl2::PublicPackageSection {
+		importedUnit := self._import -> map ErrorModelLibraryMappingAadlPackage();
+		ownedAnnexLibrary += self.map ErrorModelLibraryMapping();
+	};
+}
+
+//completed
+mapping eem::ErrorModelLibrary::ErrorModelLibraryMapping() : emv2::ErrorModelLibrary {
+	name := self.base_Package.name;
+	useTypes := self._import -> map ErrorModelLibraryMapping();
+	types := self.ownedErrorType -> map ErrorTypeMapping();
+	behaviors := self.ownedBehaviors -> map ErrorBehaviorStateMachineMapping();
+}
+
+//completed
+mapping eem::ErrorType::ErrorTypeMapping() : emv2::ErrorType {
+	name := self.base_DataType.name;
+	superType := self.extension.map ErrorTypeMapping();
+}
+//completed
+mapping eem::ErrorBehaviorStateMachine::ErrorBehaviorStateMachineMapping() : emv2::ErrorBehaviorStateMachine {
+	name := self.base_StateMachine.name;
+	useTypes := self.useType -> map ErrorModelLibraryMapping();
+	events := self.ownedEvent -> ErrorBehaviorEvent2ErrorBehaviorEvent();
+	states := self.ownedState -> map ErrorBehaviorStateMapping();
+	transitions := self.ownedTransition -> ErrorBehaviorTransitionMapping();
+}
+//completed
+mapping eem::ErrorBehaviorTransition::ErrorBehaviorTransitionMapping() : emv2::ErrorBehaviorTransition {
+	name := self.base_Transition.name;
+	source := self._from.map ErrorBehaviorStateMapping();
+	target := self.to.map ErrorBehaviorStateMapping();
+	typeTokenConstraint := self.typeSetConstraint -> ErrorTypes2TypeSet();
+	targetToken := self.typeSet -> ErrorTypes2TypeSet();
+	condition := self.transCondition.expression.ErrorBehaviorTransitionCondition2ConditionExpression();
+	destinationBranches := self.ownedBranches -> TransitionBranchMapping();
+}
+//completed
+mapping eem::TransitionBranch::TransitionBranchMapping() : emv2::TransitionBranch {
+	target := self.target.map ErrorBehaviorStateMapping();
+	targetToken := self.ownedErrorType -> ErrorTypes2TypeSet();
+	value := object emv2::BranchValue {
+		others := self.isOthers;
+		realvalue := self.probability.toString();
+	};
+}
+
+//completed
+mapping eem::ErrorBehaviorTransitionAndExpression::ErrorBehaviorTransitionAndExpressionMapping() : emv2::AndExpression {
+	operands := self.ownedExpression -> ErrorBehaviorTransitionCondition2ConditionExpression();
+}
+
+//completed
+mapping eem::ErrorBehaviorTransitionOrExpression::ErrorBehaviorTransitionOrExpressionMapping() : emv2::OrExpression {
+	operands := self.oprands -> ErrorTransitionTrigger2ConditionElement();
+}
+//completed
+mapping eem::ErrorEventTrigger::ErrorEventTriggerMapping() : emv2::ConditionElement {
+	constraint := self.ownedErrorType -> ErrorTypes2TypeSet();
+	qualifiedErrorPropagationReference := object emv2::EMV2Path {
+		emv2Target := object emv2::EMV2PathElement {
+			namedElement := self.errorEvent.map ErrorEventMapping();
+//			errorType := self.ownedErrorType -> ErrorTypes2TypeSet();
+		};
+	};
+}
+//completed
+mapping eem::PropagationPointTrigger::PropagationPointTriggerTriggerMapping() : emv2::ConditionElement {
+	constraint := self.ownedErrorType -> ErrorTypes2TypeSet();
+	qualifiedErrorPropagationReference := object emv2::EMV2Path {
+		emv2Target := object emv2::EMV2PathElement {
+			namedElement := self.point.map PropagationPointMapping();
+//			errorType := self.ownedErrorType -> ErrorTypes2TypeSet();
+		};
+	};
+}
+//completed
+mapping eem::ErrorPropagationPoint::PropagationPointMapping() : emv2::ErrorPropagation{
+	direction := self.bindFeature.getDirection();
+	typeSet := self.ownedErrorType -> ErrorTypes2TypeSet();
+	featureorPPRef := object emv2::FeatureorPPReference {
+		featureorPP := self.bindFeature.getFeature();
+	};
+}
+
+//completed
+helper ecore::EObject::getFeature() : aadl2::Feature {
+	if(self.oclIsKindOf(eaadl::Port)){
+		return self.oclAsType(eaadl::Port).Port2Port();
+	}else if(self.oclIsKindOf(eaadl::DataAccess)){
+		return self.oclAsType(eaadl::DataAccess).map DataAccessMapping();
+	}else if(self.oclIsKindOf(eaadl::SubprogramAccess)){
+		return self.oclAsType(eaadl::SubprogramAccess).map SubprogramAccessMapping();
+	};
+	return null;
+}
+
+//completed
+helper ecore::EObject::getDirection() : aadl2::DirectionType {
+	if(self.oclIsKindOf(eaadl::Port)){
+		if(self.oclAsType(eaadl::Port).direction = portandflow::FlowDirection::_in){
+			return aadl2::DirectionType::_in;
+		}else{
+			return aadl2::DirectionType::_out;
+		}
+	}else if(self.oclIsKindOf(eaadl::DataAccess)){
+		if(self.oclAsType(eaadl::DataAccess).direction = portandflow::FeatureDirection::required){
+			return aadl2::DirectionType::_in;
+		}else{
+			return aadl2::DirectionType::_out;
+		}
+	}else if(self.oclIsKindOf(eaadl::SubprogramAccess)){
+		if(self.oclAsType(eaadl::SubprogramAccess).direction = portandflow::FeatureDirection::required){
+			return aadl2::DirectionType::_in;
+		}else{
+			return aadl2::DirectionType::_out;
+		}
+	};
+	return null;
+}
+//completed
+helper eem::ErrorTransitionTrigger::ErrorTransitionTrigger2ConditionElement() : emv2::ConditionElement {
+	if(self.oclIsTypeOf(eem::ErrorEventTrigger)){
+		return self.oclAsType(eem::ErrorEventTrigger).map ErrorEventTriggerMapping();
+	}else if(self.oclIsTypeOf(eem::PropagationPointTrigger)){
+		return self.oclAsType(eem::PropagationPointTrigger).map PropagationPointTriggerTriggerMapping();
+	};
+	return null;
+}
+
+helper eem::ErrorBehaviorTransitionExpression::ErrorBehaviorTransitionCondition2ConditionExpression() : emv2::ConditionExpression {
+	if(self.oclIsTypeOf(eem::ErrorBehaviorTransitionAndExpression)){
+		return self.oclAsType(eem::ErrorBehaviorTransitionAndExpression).map ErrorBehaviorTransitionAndExpressionMapping();
+	}else if(self.oclIsTypeOf(eem::ErrorBehaviorTransitionOrExpression)){
+		return self.oclAsType(eem::ErrorBehaviorTransitionOrExpression).map ErrorBehaviorTransitionOrExpressionMapping();
+	};
+	return null;
+}
+
+//completed
+mapping eem::ErrorBehaviorState::ErrorBehaviorStateMapping() : emv2::ErrorBehaviorState {
+	name := self.base_State.name;
+	intial := self.isInitial;
+	typeSet := self.ownedErrorType -> ErrorTypes2TypeSet();
+}
+
+//completed
+mapping eem::ErrorEvent::ErrorEventMapping() : emv2::ErrorEvent {
+	name := self.base_ChangeEvent.name;
+	typeSet := self.ownedErrorType -> ErrorTypes2TypeSet();
+}
+//completed
+mapping eem::RepairEvent::RepairEventMapping() : emv2::RepairEvent {
+	name := self.base_ChangeEvent.name;
+}
+//completed
+mapping eem::RecoverEvent::RecoverEventMapping() : emv2::RecoverEvent {
+	name := self.base_ChangeEvent.name;
+}
+
+/*ErrorModelSubclause Mapping*/
+//completed
+mapping eem::ErrorModelSubclause::ErrorModelSubclauseMapping() : emv2::ErrorModelSubclause {
+	useTypes := self.useTypes -> ErrorModelLibraryMapping();
+	useBehavior := self.ownedBehavior.importBehavior.map ErrorBehaviorStateMachineMapping();
+	events := self.ownedBehavior.ownedEvent -> ErrorBehaviorEvent2ErrorBehaviorEvent();
+	transitions := self.ownedBehavior.ownedTransition->selectByType(eem::ErrorBehaviorTransition) -> map ErrorBehaviorTransitionMapping();
+	propagations := self.ownedPropagationPoint -> PropagationPointMapping();
+	outgoingPropagationConditions := self.ownedBehavior.ownedErrorPropagation -> map ErrorPropagationMapping();
+}
+
+//completed
+mapping eem::ErrorPropagation::ErrorPropagationMapping() : emv2::OutgoingPropagationCondition {
+	name := self.base_Transition.name;
+	state := self._from.map ErrorBehaviorStateMapping();
+	outgoing := self.target.map PropagationPointMapping();
+	typeTokenConstraint := self.typeSetConstraint -> ErrorTypes2TypeSet();
+	typeToken := self.typeSet -> ErrorTypes2TypeSet();
+	condition := self.transCondition.expression.ErrorBehaviorTransitionCondition2ConditionExpression();
+}
+
+//completed
+helper Set(eem::ErrorType)::ErrorTypes2TypeSet() : emv2::TypeSet{
+	return object emv2::TypeSet {
+		typeTokens += object emv2::TypeToken {
+			type := self -> map ErrorTypeMapping();
+		}; 
+	};
+}
+
+//completed
+helper eem::ErrorBehaviorEvent::ErrorBehaviorEvent2ErrorBehaviorEvent() : emv2::ErrorBehaviorEvent {
+	if(self.oclIsTypeOf(eem::ErrorEvent)){
+		return self.oclAsType(eem::ErrorEvent).map ErrorEventMapping();
+	}else if(self.oclIsTypeOf(eem::RepairEvent)){
+		return self.oclAsType(eem::RepairEvent).map RepairEventMapping();
+	}else if(self.oclIsTypeOf(eem::RecoverEvent)){
+		return self.oclAsType(eem::RecoverEvent).map RecoverEventMapping();
+	};
+	return null;
+}
+
+//completed
+helper String::String2GroupHolder() : ba::GroupHolder {
+	return object ba::GroupHolder{
+		element := object ba::BehaviorVariable {
+			name := self;
+		};
+	};
+}
+//completed
+helper eba::SubprogramCallAction::SubprogramCallAction2SubprogramCallAction() : ba::SubprogramCallAction{
+	if(self.oclIsTypeOf(eba::SubprogramInstanceCallAction)){
+		return object ba::SubprogramCallAction{
+			subprogram := self.oclAsType(eba::SubprogramInstanceCallAction).map SubprogramInstanceCallActionMapping();
+		};
+	}else if(self.oclIsTypeOf(eba::SubprogramInterfaceCallAction)){
+		return object ba::SubprogramCallAction{
+			subprogram := self.oclAsType(eba::SubprogramInterfaceCallAction).map SubprogramInterfaceCallActionMapping();
+		};
+	};
+	return null;
+}
+
+//completed
+helper eba::BehaviorAction::BehaviorAction2BehaviorAction() : ba::BehaviorAction {
+
+	if(self.oclIsTypeOf(eba::SendOutput)){
+		return object ba::PortSendAction {
+			port := self.oclAsType(eba::SendOutput).PortAction2ActualPortHolder();
+		};
+	}else if(self.oclIsTypeOf(eba::GetInput)){
+		return object ba::PortDequeueAction {
+			port := self.oclAsType(eba::GetInput).PortAction2ActualPortHolder();
+		};
+	}else if(self.oclIsKindOf(eba::SubprogramCallAction)){
+	
+		return self.oclAsType(eba::SubprogramCallAction).SubprogramCallAction2SubprogramCallAction();
+	};
+	
+	return null;
+}
+//completed
+helper eba::PortAction::PortAction2ActualPortHolder() : ba::ActualPortHolder {
+	if(self.port.oclIsTypeOf(eaadl::DataPort)){
+		return object ba::DataPortHolder {
+			element := self.port.oclAsType(eaadl::DataPort).map DataPortMapping();
+			groupHolders := self.parameter -> String2GroupHolder();
+		};
+	}else if(self.port.oclIsTypeOf(eaadl::EventPort)){
+		return object ba::EventPortHolder {
+			element := self.port.oclAsType(eaadl::EventPort).map EventPortMapping();
+			groupHolders := self.parameter -> String2GroupHolder();
+		};
+	}else{
+		var a : ba::EventDataPortHolder := object ba::EventDataPortHolder {
+			element := self.port.oclAsType(eaadl::EventDataPort).map EventDataPortMapping();
+			groupHolders := self.parameter -> String2GroupHolder();
+		};
+//		log(self.toString());
+//		log(self.oclAsType(eba::GetInput).toString());
+		return a;
+	};
+	return null;
+}
+
+//completed
+helper eba::TransitionCondition::TransitionConditionMapping() : ba::BehaviorCondition {
+	if(self.oclIsTypeOf(eba::TextCondition)){
+		return self.oclAsType(eba::TextCondition).map TextConditionMapping();
+	}else if(self.oclIsTypeOf(eba::DispatchCondition)){
+		return self.oclAsType(eba::DispatchCondition).map DispatchConditionMapping();
+	};
+	return null;
+}
+
+/*abstract stereotype trnasfer*/
+//completed
+helper eaadl::DataClassifier::DataClassifier2DataSubcomponentType() : aadl2::DataSubcomponentType {
+	if(self.oclIsTypeOf(eaadl::DataType)) {
+		return self.oclAsType(eaadl::DataType).map DataTypeMapping();
+	}else if(self.oclIsTypeOf(eaadl::DataImplementation)){
+		return self.oclAsType(eaadl::DataImplementation).map DataImplementationMapping();
+	}else if(self.oclIsKindOf(ecore::EDataType)){
+		return componentType->get("PrimitiveTypes")->get(self.oclAsType(ecore::EDataType).name).oclAsType(aadl2::DataType);
+	};
+	return null;
+}
+//completed
+helper eaadl::SubprogramClassifier::SubprogramClassifier2SubprogramSubcomponentType() : aadl2::SubprogramSubcomponentType {
+	if(self.oclIsKindOf(eaadl::SubprogramType)) {
+		return self.oclAsType(eaadl::SubprogramType).map SubprogramTypeMapping();
+	}else{
+		return self.oclAsType(eaadl::SubprogramImplementation).map SubprogramImplementationMapping();
+	}
+}
+
+//completed
+helper eaadl::BusClassifier::BusClassifier2BusSubcomponentType() : aadl2::BusSubcomponentType {
+	if(self.oclIsKindOf(eaadl::BusType)) {
+		return self.oclAsType(eaadl::BusType).map BusTypeMapping();
+	}else{
+		return self.oclAsType(eaadl::BusImplementation).map BusImplementationMapping();
+	}
+}
+
+//completed
+helper eaadl::ThreadClassifier::ThreadClassifier2ThreadSubcomponentType() : aadl2::ThreadSubcomponentType {
+	if(self.oclIsKindOf(eaadl::ThreadType)) {
+		return self.oclAsType(eaadl::ThreadType).map ThreadTypeMapping();
+	}else{
+		return self.oclAsType(eaadl::ThreadImplementation).map ThreadImplementationMapping();
+	}
+}
+
+//completed
+helper eaadl::BusClassifier::BusClassifier2ThreadSubcomponentType() : aadl2::BusSubcomponentType {
+	if(self.oclIsKindOf(eaadl::BusType)) {
+		return self.oclAsType(eaadl::BusType).map BusTypeMapping();
+	}else{
+		return self.oclAsType(eaadl::BusImplementation).map BusImplementationMapping();
+	}
+}
+
+//completed
+helper eaadl::SystemClassifier::SystemClassifier2SystemSubcomponentType() : aadl2::SystemSubcomponentType {
+	if(self.oclIsKindOf(eaadl::SystemType)) {
+		return self.oclAsType(eaadl::SystemType).map SystemTypeMapping();
+	}else{
+		return self.oclAsType(eaadl::SystemImplementation).map SystemImplementationMapping();
+	}
+}
+//completed
+helper eaadl::DeviceClassifier::DeviceClassifier2DeviceSubcomponentType() : aadl2::DeviceSubcomponentType {
+	if(self.oclIsKindOf(eaadl::DeviceType)) {
+		return self.oclAsType(eaadl::DeviceType).map DeviceTypeMapping();
+	}else{
+		return self.oclAsType(eaadl::DeviceImplementation).map DeviceImplementationMapping();
+	}
+}
+//completed
+helper eaadl::MemoryClassifier::MemoryClassifier2MemorySubcomponentType() : aadl2::MemorySubcomponentType {
+	if(self.oclIsKindOf(eaadl::MemoryType)) {
+		return self.oclAsType(eaadl::MemoryType).map MemoryTypeMapping();
+	}else{
+		return self.oclAsType(eaadl::MemoryImplementation).map MemoryImplementationMapping();
+	}
+}
+
+//completed
+helper eaadl::ProcessorClassifier::ProcessorClassifier2ProcessorSubcomponentType() : aadl2::ProcessorSubcomponentType {
+	if(self.oclIsKindOf(eaadl::ProcessorType)) {
+		return self.oclAsType(eaadl::ProcessorType).map ProcessorTypeMapping();
+	}else{
+		return self.oclAsType(eaadl::ProcessorImplementation).map ProcessorImplementationMapping();
+	}
+}
+//completed
+helper eaadl::ProcessClassifier::ProcessClassifier2ProcessSubcomponentType() : aadl2::ProcessSubcomponentType {
+	if(self.oclIsKindOf(eaadl::ProcessType)) {
+		return self.oclAsType(eaadl::ProcessType).map ProcessTypeMapping();
+	}else{
+		return self.oclAsType(eaadl::ProcessImplementation).map ProcessImplementationMapping();
+	}
+}
+
+//completed
+helper eaadl::SubprogramCall::SubprogramCall2SubprogramCall() : aadl2::SubprogramCall {
+	if(self.oclIsKindOf(eaadl::SubprogramInstanceCall)) {
+		return self.oclAsType(eaadl::SubprogramInstanceCall).map SubprogramInstanceCallMapping();
+	}else{
+		return self.oclAsType(eaadl::SubprogramInterfaceCall).map SubprogramInterfaceCallMapping();
+	}
+}
+
+//completed
+helper eaadl::Mode::Mode2Mode() : aadl2::Mode {
+	if(self.oclIsKindOf(eaadl::InitialMode)){
+		return self.oclAsType(eaadl::InitialMode).map InitialModeMapping()
+	}else{
+		return self.oclAsType(eaadl::NormalMode).map NormalModeMapping();
+	}
+}
+//completed
+helper eaadl::ModeTransitionTriggerContext::ModeTransitionTriggerContext2Context() : aadl2::Context {
+	if(self.oclIsKindOf(eaadl::SubcomponentClassifier)){
+		return self.oclAsType(eaadl::SubcomponentClassifier).SubcomponentClassifier2Context();
+	};
+	return null;
+}
+
+helper eaadl::SubcomponentClassifier::SubcomponentClassifier2Context() : aadl2::Context {
+	if(self.oclIsKindOf(eaadl::SubprogramSubcomponent)){
+		return self.oclAsType(eaadl::SubprogramSubcomponent).map SubprogramSubcomponentMapping();
+	}else if(self.oclIsKindOf(eaadl::ThreadSubcomponent)){
+		return self.oclAsType(eaadl::ThreadSubcomponent).map ThreadSubcomponentMapping();
+	}else if(self.oclIsKindOf(eaadl::ProcessSubcomponent)){
+		return self.oclAsType(eaadl::ProcessSubcomponent).map ProcessSubcomponentMapping();
+	}else if(self.oclIsKindOf(eaadl::ProcessorSubcomponent)){
+		return self.oclAsType(eaadl::ProcessorSubcomponent).map ProcessorSubcomponentMapping();
+	}else if(self.oclIsKindOf(eaadl::MemorySubcomponent)){
+		return self.oclAsType(eaadl::MemorySubcomponent).map MemorySubcomponentMapping();
+	}else if(self.oclIsKindOf(eaadl::DeviceSubcomponent)){
+		return self.oclAsType(eaadl::DeviceSubcomponent).map DeviceSubcomponentMapping();
+	}else if(self.oclIsKindOf(eaadl::SystemSubcomponent)){
+		return self.oclAsType(eaadl::SystemSubcomponent).map SystemSubcomponentMapping();
+	};
+	return null;
+}
+//completed
+helper eaadl::DataAccessConnectionEnd::DataAccessConnectionEnd2ConnectionEnd() : aadl2::ConnectionEnd {
+	if(self.oclIsKindOf(eaadl::DataAccess)){
+		return self.oclAsType(eaadl::DataAccess).map DataAccessMapping();
+	}else if(self.oclIsKindOf(eaadl::DataSubcomponent)){
+		return self.oclAsType(eaadl::DataSubcomponent).map DataSubcomponentMapping();
+	};
+	return null;
+}
+//completed
+helper eaadl::SubprogramAccess::SubprogramAccessConnectionEnd2ConnectionEnd() : aadl2::ConnectionEnd {
+	if(self.oclIsKindOf(eaadl::SubprogramAccess)){
+		return self.oclAsType(eaadl::SubprogramAccess).map SubprogramAccessMapping();
+	}else if(self.oclIsKindOf(eaadl::SubprogramSubcomponent)){
+		return self.oclAsType(eaadl::SubprogramSubcomponent).map SubprogramSubcomponentMapping();
+	};
+	return null;
+}
+//completed
+helper eaadl::BusAccessConnectionEnd::BusAccessConnectionEnd2ConnectionEnd() : aadl2::ConnectionEnd {
+	if(self.oclIsKindOf(eaadl::BusAccess)){
+		return self.oclAsType(eaadl::BusAccess).map BusAccessMapping();
+	}else if(self.oclIsKindOf(eaadl::BusSubcomponent)){
+		return self.oclAsType(eaadl::BusSubcomponent).map BusSubcomponentMapping();
+	};
+	return null;
+}
+//completed
+helper eaadl::ParameterConnectionEnd::ParameterConnectionEnd2ConnectionEnd() : aadl2::ConnectionEnd {
+	if(self.oclIsKindOf(eaadl::Parameter)){
+		return self.oclAsType(eaadl::Parameter).map ParameterMapping();
+	}else if(self.oclIsKindOf(eaadl::DataPort)){
+		return self.oclAsType(eaadl::DataPort).map DataPortMapping();
+	};
+	return null;
+}
+//completed
+helper eaadl::Port::Port2Port() : aadl2::Port {
+	if(self.oclIsTypeOf(eaadl::DataPort)){
+		return self.oclAsType(eaadl::DataPort).map DataPortMapping();
+	}else if(self.oclIsTypeOf(eaadl::EventDataPort)){
+		return self.oclAsType(eaadl::EventDataPort).map EventDataPortMapping();
+	}else{
+		return self.oclAsType(eaadl::EventPort).map EventPortMapping();
+	};
+	return null;
+}
+//completed
+helper eaadl::PortAndAccessConectionContext::PortAndAccessConectionContext2Context() : aadl2::Context {
+	if(self.oclIsKindOf(eaadl::SubcomponentClassifier)){
+		return self.oclAsType(eaadl::SubcomponentClassifier).SubcomponentClassifier2Context();
+	};
+	return null;
+}
+
+//completed
+helper eaadl::ParameterConnectionContext::ParameterConnectionContext2Context() : aadl2::Context {
+	if(self.oclIsKindOf(eaadl::SubprogramCall)){
+		return self.oclAsType(eaadl::SubprogramCall).SubprogramCall2Context();
+	};
+	return null;
+}
+
+//completed
+helper eaadl::SubprogramCall::SubprogramCall2Context() : aadl2::Context {
+	if(self.oclIsKindOf(eaadl::SubprogramInstanceCall)){
+		return self.oclAsType(eaadl::SubprogramInstanceCall).map SubprogramInstanceCallMapping();
+	}else if(self.oclIsKindOf(eaadl::SubprogramInterfaceCall)){
+		return self.oclAsType(eaadl::SubprogramInterfaceCall).map SubprogramInterfaceCallMapping();
+	};
+	return null;
+}
+
+//completed
+helper eaadl::SubprogramInstance::SubprogramInstance2CalledSubprogram() : aadl2::CalledSubprogram {
+	if(self.oclIsKindOf(eaadl::SubprogramClassifier)){
+		return self.oclAsType(eaadl::SubprogramClassifier).SubprogramClassifier2SubprogramSubcomponentType().oclAsType(aadl2::CalledSubprogram);
+	}else if(self.oclIsKindOf(eaadl::SubprogramSubcomponent)){
+		return self.oclAsType(eaadl::SubprogramSubcomponent).map SubprogramSubcomponentMapping();
+	};
+	return null;
+}
+//completed
+helper eaadl::SubprogramInterface::SubprogramInterface2CalledSubprogram() : aadl2::CalledSubprogram {
+	if(self.oclIsKindOf(eaadl::SubprogramAccess)){
+		return self.oclAsType(eaadl::SubprogramAccess).map SubprogramAccessMapping();
+	};
+	return null;
+}
+//completed
+helper eaadl::SubprogramCallContext::SubprogramCallContext2CalledContext() : aadl2::CallContext {
+	if(self.oclIsKindOf(eaadl::DataType)){
+		return self.oclAsType(eaadl::DataType).map DataTypeMapping();
+	};
+	return null;
+}
+
+/*direction enumation trnasfer*/
+//completed
+helper portandflow::FlowDirection::FlowDirection2DirectionType() : aadl2::DirectionType {
+	if(self = portandflow::FlowDirection::_in){
+		return aadl2::DirectionType::_in;
+	}else{
+		return aadl2::DirectionType::_out;
+	}
+}
+//completed
+helper portandflow::FeatureDirection::FeatureDirection2AccessType() : aadl2::AccessType {
+	if(self = portandflow::FeatureDirection::required){
+		return aadl2::AccessType::requires;
+	}else{
+		return aadl2::AccessType::provides;
+	}
+}
+
+//completed
+helper uml::ParameterDirectionKind::ParameterDirectionKind2AccessType() : aadl2::DirectionType {
+	if(self = uml::ParameterDirectionKind::_in){
+		return aadl2::DirectionType::_in;
+	}else{
+		return aadl2::DirectionType::_out;
+	}
+}
+
+helper eba::BehaviorActionBlock::BehaviorActionBlock2BehaviorActions() : ba::BehaviorActions{
+	if(self.firstAction.next.oclIsUndefined()){
+		return self.firstAction.BehaviorAction2BehaviorAction();
+	}else{
+		return self.map BehaviorActionBlockMapping();
+	};
+	return null;
+}
+
+/*others*/
+helper prepareBaseLib() {
+	var newPackage : aadl2::AadlPackage := object aadl2::AadlPackage{
+		name := "Base_Types";
+		ownedPublicSection := object PublicPackageSection {};
+	};
+	
+	componentType->put("PrimitiveTypes", Dict{});
+	componentType->get("PrimitiveTypes")->put("String", object aadl2::DataType{name := "String"});
+	newPackage.ownedPublicSection.ownedClassifier += componentType->get("PrimitiveTypes")->get("String");
+	componentType->get("PrimitiveTypes")->put("Boolean", object aadl2::DataType{name := "Boolean"});
+	newPackage.ownedPublicSection.ownedClassifier += componentType->get("PrimitiveTypes")->get("Boolean");
+	componentType->get("PrimitiveTypes")->put("Real", object aadl2::DataType{name := "Float"});
+	newPackage.ownedPublicSection.ownedClassifier += componentType->get("PrimitiveTypes")->get("Real");
+	componentType->get("PrimitiveTypes")->put("Integer", object aadl2::DataType{name := "Integer"});
+	newPackage.ownedPublicSection.ownedClassifier += componentType->get("PrimitiveTypes")->get("Integer");
+	
+	package->put("PrimitiveTypes", newPackage);
+}
+
+helper aadl2::AadlPackage::preparePackage() {
+	if(not package->hasKey(self.name)){
+		package->put(self.name, self);
+	}else{
+		log("Duplicate package " + self.name);
+	};
+}

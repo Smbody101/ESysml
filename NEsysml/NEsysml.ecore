@@ -1,0 +1,735 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="NEsysml" nsURI="http://smbody/esysml/2.0/ESysML" nsPrefix="NEsysml">
+  <eClassifiers xsi:type="ecore:EEnum" name="Dummy"/>
+  <eSubpackages name="Aadl" nsURI="http://smbody/esysml/2.0/ESysML/Aadl" nsPrefix="NEsysml.Aadl">
+    <eClassifiers xsi:type="ecore:EClass" name="Extension">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Generalization"
+          ordered="false" eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Generalization"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Implementation">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Generalization"
+          ordered="false" eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Generalization"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ComponentType" abstract="true" eSuperTypes="#//Aadl/ComponentClassifier">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="extended" ordered="false"
+          eType="#//Aadl/ComponentType" volatile="true" transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ComponentClassifier" abstract="true"
+        eSuperTypes="#//Aadl/Classifier">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedErrorModel" ordered="false"
+          eType="#//EM/ErrorModelSubclause" volatile="true" transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Classifier" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ComponentImplementation" abstract="true"
+        eSuperTypes="#//Aadl/ComponentClassifier">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="type" ordered="false"
+          lowerBound="1" eType="#//Aadl/ComponentType" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="extended" ordered="false"
+          eType="#//Aadl/ComponentImplementation" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="BusClassifier" abstract="true" eSuperTypes="#//Aadl/ModeAvailable #//Aadl/PlatformClassifier"/>
+    <eClassifiers xsi:type="ecore:EClass" name="PlatformClassifier" abstract="true"
+        eSuperTypes="#//Aadl/Classifier"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ModeAvailable" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedMode" ordered="false"
+          eType="#//Aadl/ModeStateMachine" volatile="true" transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ModeStateMachine">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_StateMachine" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//StateMachine"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedMode" ordered="false"
+          lowerBound="1" upperBound="-1" eType="#//Aadl/Mode" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedTransition" ordered="false"
+          upperBound="-1" eType="#//Aadl/ModeTransition" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Mode" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ModeTransition">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Transition" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Transition"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="trigger" ordered="false"
+          upperBound="-1" eType="#//Aadl/ModeTransitionTrigger" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="from" ordered="false"
+          lowerBound="1" eType="#//Aadl/Mode" volatile="true" transient="true" derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="to" ordered="false" lowerBound="1"
+          eType="#//Aadl/Mode" volatile="true" transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ModeTransitionTrigger">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Trigger" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Trigger"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="port" ordered="false"
+          lowerBound="1" eType="#//Aadl/EventPort"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="context" ordered="false"
+          eType="#//Aadl/ModeTransitionTriggerContext"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="EventPort" eSuperTypes="#//Aadl/Port"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Port" abstract="true" eSuperTypes="../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//portsandflows/ProxyPort #//Aadl/Feature">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="specification" ordered="false"
+          lowerBound="1" eType="#//Aadl/PortDataFlowSpecification" volatile="true"
+          transient="true" derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="direction" ordered="false"
+          lowerBound="1" eType="ecore:EEnum ../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//portsandflows/FlowDirection"
+          volatile="true" transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Feature" abstract="true" eSuperTypes="#//Aadl/Classifier"/>
+    <eClassifiers xsi:type="ecore:EClass" name="PortDataFlowSpecification" eSuperTypes="#//Aadl/DataFlowSpecification">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="eventGate" ordered="false"
+          lowerBound="1" eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Interface"
+          volatile="true" transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="DataFlowSpecification" eSuperTypes="../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//portsandflows/InterfaceBlock">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="type" ordered="false"
+          eType="#//Aadl/DataClassifier" volatile="true" transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="DataClassifier" abstract="true" eSuperTypes="#//Aadl/SoftwareClassifier"/>
+    <eClassifiers xsi:type="ecore:EClass" name="SoftwareClassifier" abstract="true"
+        eSuperTypes="#//Aadl/Classifier"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ModeTransitionTriggerContext" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="DeviceClassifier" abstract="true"
+        eSuperTypes="#//Aadl/ModeAvailable #//Aadl/PlatformClassifier"/>
+    <eClassifiers xsi:type="ecore:EClass" name="MemoryClassifier" abstract="true"
+        eSuperTypes="#//Aadl/ModeAvailable #//Aadl/PlatformClassifier"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ProcessClassifier" abstract="true"
+        eSuperTypes="#//Aadl/ModeAvailable #//Aadl/SoftwareClassifier"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ProcessorClassifier" abstract="true"
+        eSuperTypes="#//Aadl/ModeAvailable #//Aadl/PlatformClassifier"/>
+    <eClassifiers xsi:type="ecore:EClass" name="SubprogramClassifier" abstract="true"
+        eSuperTypes="#//Aadl/ModeAvailable #//Aadl/SoftwareClassifier #//Aadl/SubprogramInstance"/>
+    <eClassifiers xsi:type="ecore:EClass" name="SubprogramInstance" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="SystemClassifier" abstract="true"
+        eSuperTypes="#//Aadl/ModeAvailable #//Aadl/Classifier"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ThreadClassifier" abstract="true"
+        eSuperTypes="#//Aadl/ModeAvailable #//Aadl/SoftwareClassifier"/>
+    <eClassifiers xsi:type="ecore:EClass" name="BusImplementation" eSuperTypes="#//Aadl/ComponentImplementation ../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//blocks/Block #//Aadl/AnnexContaining #//Aadl/BusAccessConnectionContaining #//Aadl/BusClassifier #//Aadl/PortConnectionContaining"/>
+    <eClassifiers xsi:type="ecore:EClass" name="PortConnectionContaining" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedPortConnection"
+          ordered="false" upperBound="-1" eType="#//Aadl/PortConnection" volatile="true"
+          transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="PortConnection" eSuperTypes="#//Aadl/Connection">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Connector" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Connector"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="in" ordered="false" lowerBound="1"
+          eType="#//Aadl/Port" volatile="true" transient="true" derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="out" ordered="false"
+          lowerBound="1" eType="#//Aadl/Port" volatile="true" transient="true" derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="inContext" ordered="false"
+          eType="#//Aadl/PortAndAccessConectionContext" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="outContext" ordered="false"
+          eType="#//Aadl/PortAndAccessConectionContext" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Connection" abstract="true" eSuperTypes="#//Aadl/Classifier"/>
+    <eClassifiers xsi:type="ecore:EClass" name="PortAndAccessConectionContext" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="AnnexContaining" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedAnnex" ordered="false"
+          upperBound="-1" eType="#//Aadl/Annex" volatile="true" transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Annex" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="BusAccessConnectionContaining" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedBusConnection" ordered="false"
+          upperBound="-1" eType="#//Aadl/BusConnection" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="BusConnection">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Connector" ordered="false"
+          lowerBound="1" eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Connector"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="require" ordered="false"
+          lowerBound="1" eType="#//Aadl/BusAccessConnectionEnd" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="provide" ordered="false"
+          lowerBound="1" eType="#//Aadl/BusAccessConnectionEnd" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="inContext" ordered="false"
+          eType="#//Aadl/PortAndAccessConectionContext" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="outContext" ordered="false"
+          eType="#//Aadl/PortAndAccessConectionContext" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="BusAccessConnectionEnd" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="BusType" eSuperTypes="../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//blocks/Block #//Aadl/ComponentType #//Aadl/AnnexContaining #//Aadl/BusAccessContaining #//Aadl/BusClassifier #//Aadl/PortContaining"/>
+    <eClassifiers xsi:type="ecore:EClass" name="PortContaining" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedport" ordered="false"
+          upperBound="-1" eType="#//Aadl/Port" volatile="true" transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="BusAccessContaining" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedBusAccess" ordered="false"
+          upperBound="-1" eType="#//Aadl/BusAccess" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="BusAccess" eSuperTypes="../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//portsandflows/ProxyPort #//Aadl/BusAccessConnectionEnd">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="specification" ordered="false"
+          lowerBound="1" eType="#//Aadl/BusFlowSpecification" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="direction" ordered="false"
+          lowerBound="1" eType="ecore:EEnum ../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//portsandflows/FeatureDirection"
+          volatile="true" transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="BusFlowSpecification" eSuperTypes="../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//portsandflows/InterfaceBlock">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="type" ordered="false"
+          lowerBound="1" eType="#//Aadl/BusClassifier" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="DataImplementation" eSuperTypes="#//Aadl/ComponentImplementation ../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//blocks/Block #//Aadl/AnnexContaining #//Aadl/DataAccessConnectionContaining #//Aadl/DataContaining #//Aadl/SubprogramAccessConnectionContaining #//Aadl/SubprogramContaining #//Aadl/DataClassifier"/>
+    <eClassifiers xsi:type="ecore:EClass" name="DataContaining" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedDataSubcomponent"
+          ordered="false" upperBound="-1" eType="#//Aadl/DataSubcomponent" volatile="true"
+          transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="DataSubcomponent" eSuperTypes="#//Aadl/SubcomponentClassifier #//Aadl/DataAccessConnectionEnd">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="type" ordered="false"
+          lowerBound="1" eType="#//Aadl/DataClassifier" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SubcomponentClassifier" abstract="true"
+        eSuperTypes="#//Aadl/Classifier #//Aadl/ModeTransitionTriggerContext #//Aadl/PortAndAccessConectionContext">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Property" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Property"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="DataAccessConnectionEnd" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="SubprogramContaining" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedSubprogramSubcomponent"
+          ordered="false" upperBound="-1" eType="#//Aadl/SubprogramSubcomponent" volatile="true"
+          transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SubprogramSubcomponent" eSuperTypes="#//Aadl/SubcomponentClassifier #//Aadl/SubprogramInstance">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="type" ordered="false"
+          lowerBound="1" eType="#//Aadl/SubprogramClassifier" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="DataAccessConnectionContaining" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedDataAccessConnection"
+          ordered="false" upperBound="-1" eType="#//Aadl/DataAccessConnection" volatile="true"
+          transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="DataAccessConnection" eSuperTypes="../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//blocks/BindingConnector #//Aadl/Connection">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="require" ordered="false"
+          lowerBound="1" eType="#//Aadl/DataAccessConnectionEnd" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="provide" ordered="false"
+          lowerBound="1" eType="#//Aadl/DataAccessConnectionEnd" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="inContext" ordered="false"
+          eType="#//Aadl/PortAndAccessConectionContext" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="outContext" ordered="false"
+          eType="#//Aadl/PortAndAccessConectionContext" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SubprogramAccessConnectionContaining"
+        abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedSubprogramAccessConnection"
+          ordered="false" upperBound="-1" eType="#//Aadl/SubprogramAccessConnection"
+          volatile="true" transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SubprogramAccessConnection" eSuperTypes="#//Aadl/Connection">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Connector" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Connector"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="require" ordered="false"
+          lowerBound="1" eType="#//Aadl/SubprogramAccess" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="provide" ordered="false"
+          lowerBound="1" eType="#//Aadl/SubprogramAccess" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="inContext" ordered="false"
+          eType="#//Aadl/PortAndAccessConectionContext" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="outContext" ordered="false"
+          eType="#//Aadl/PortAndAccessConectionContext" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SubprogramAccess" eSuperTypes="../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//portsandflows/ProxyPort #//Aadl/Feature #//Aadl/SubprogramInterface">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="specification" ordered="false"
+          lowerBound="1" eType="#//Aadl/SubprogramSpecification" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="direction" ordered="false"
+          lowerBound="1" eType="ecore:EEnum ../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//portsandflows/FeatureDirection"
+          volatile="true" transient="true" derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="type" ordered="false"
+          lowerBound="1" eType="#//Aadl/SubprogramClassifier" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SubprogramInterface" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="SubprogramSpecification" eSuperTypes="../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//portsandflows/InterfaceBlock"/>
+    <eClassifiers xsi:type="ecore:EClass" name="DataType" eSuperTypes="../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//blocks/Block #//Aadl/ComponentType #//Aadl/AnnexContaining #//Aadl/DataAccessContaining #//Aadl/SubprogramAccessContaining #//Aadl/DataClassifier #//Aadl/SubprogramCallContext"/>
+    <eClassifiers xsi:type="ecore:EClass" name="SubprogramAccessContaining" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedSubprogramAccess"
+          ordered="false" upperBound="-1" eType="#//Aadl/SubprogramAccess" volatile="true"
+          transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="DataAccessContaining" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedDataAccess" ordered="false"
+          upperBound="-1" eType="#//Aadl/DataAccess" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="DataAccess" eSuperTypes="../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//portsandflows/ProxyPort #//Aadl/DataAccessConnectionEnd #//Aadl/Feature">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="specification" ordered="false"
+          lowerBound="1" eType="#//Aadl/DataFlowSpecification" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="direction" ordered="false"
+          lowerBound="1" eType="ecore:EEnum ../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//portsandflows/FeatureDirection"
+          volatile="true" transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SubprogramCallContext" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="DeviceImplementation" eSuperTypes="#//Aadl/ComponentImplementation ../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//blocks/Block #//Aadl/AnnexContaining #//Aadl/BusAccessConnectionContaining #//Aadl/BusContaining #//Aadl/DataContaining #//Aadl/DeviceClassifier #//Aadl/PortConnectionContaining #//Aadl/SubprogramAccessConnectionContaining"/>
+    <eClassifiers xsi:type="ecore:EClass" name="BusContaining" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedBusSubcomponent"
+          ordered="false" upperBound="-1" eType="#//Aadl/BusSubcomponent" volatile="true"
+          transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="BusSubcomponent" eSuperTypes="#//Aadl/SubcomponentClassifier #//Aadl/BusAccessConnectionEnd">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="type" ordered="false"
+          lowerBound="1" eType="#//Aadl/BusClassifier" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="DeviceType" eSuperTypes="../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//blocks/Block #//Aadl/ComponentType #//Aadl/AnnexContaining #//Aadl/BusAccessContaining #//Aadl/DeviceClassifier #//Aadl/PortContaining #//Aadl/SubprogramAccessContaining"/>
+    <eClassifiers xsi:type="ecore:EClass" name="MemoryImplementation" eSuperTypes="#//Aadl/ComponentImplementation ../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//blocks/Block #//Aadl/AnnexContaining #//Aadl/BusAccessConnectionContaining #//Aadl/BusContaining #//Aadl/MemoryClassifier #//Aadl/MemoryContaining #//Aadl/PortConnectionContaining"/>
+    <eClassifiers xsi:type="ecore:EClass" name="MemoryContaining" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedMemorySubcomponent"
+          ordered="false" upperBound="-1" eType="#//Aadl/MemorySubcomponent" volatile="true"
+          transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="MemorySubcomponent" eSuperTypes="#//Aadl/SubcomponentClassifier">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="type" ordered="false"
+          lowerBound="1" eType="#//Aadl/MemoryClassifier" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="MemoryType" eSuperTypes="../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//blocks/Block #//Aadl/ComponentType #//Aadl/AnnexContaining #//Aadl/BusAccessContaining #//Aadl/MemoryClassifier #//Aadl/PortContaining"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ProcessImplementation" eSuperTypes="#//Aadl/ComponentImplementation ../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//blocks/Block #//Aadl/AnnexContaining #//Aadl/DataAccessConnectionContaining #//Aadl/DataContaining #//Aadl/PortConnectionContaining #//Aadl/ProcessClassifier #//Aadl/SubprogramAccessConnectionContaining #//Aadl/SubprogramContaining #//Aadl/ThreadContaining"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ThreadContaining" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedThreadSubcomponent"
+          ordered="false" upperBound="-1" eType="#//Aadl/ThreadSubcomponent" volatile="true"
+          transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ThreadSubcomponent" eSuperTypes="#//Aadl/SubcomponentClassifier">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="type" ordered="false"
+          lowerBound="1" eType="#//Aadl/ThreadClassifier" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ProcessorImplementation" eSuperTypes="#//Aadl/ComponentImplementation ../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//blocks/Block #//Aadl/AnnexContaining #//Aadl/BusAccessConnectionContaining #//Aadl/BusContaining #//Aadl/MemoryContaining #//Aadl/PortConnectionContaining #//Aadl/ProcessorClassifier #//Aadl/SubprogramAccessConnectionContaining"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ProcessorType" eSuperTypes="../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//blocks/Block #//Aadl/ComponentType #//Aadl/AnnexContaining #//Aadl/BusAccessContaining #//Aadl/PortContaining #//Aadl/ProcessorClassifier #//Aadl/SubprogramAccessContaining"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ProcessType" eSuperTypes="../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//blocks/Block #//Aadl/ComponentType #//Aadl/AnnexContaining #//Aadl/DataAccessContaining #//Aadl/PortContaining #//Aadl/ProcessClassifier"/>
+    <eClassifiers xsi:type="ecore:EClass" name="SubprogramImplementation" eSuperTypes="#//Aadl/ComponentImplementation #//Aadl/AnnexContaining #//Aadl/CallSequenceDescribable #//Aadl/DataAccessConnectionContaining #//Aadl/DataContaining #//Aadl/ParameterConnectionContaining #//Aadl/PortConnectionContaining #//Aadl/SubprogramAccessConnectionContaining #//Aadl/SubprogramClassifier #//Aadl/SubprogramContaining">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Activity" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Activity"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ParameterConnectionContaining" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedParameterConnection"
+          ordered="false" upperBound="-1" eType="#//Aadl/ParameterConnection" volatile="true"
+          transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ParameterConnection" eSuperTypes="#//Aadl/Connection">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_ObjectFlow" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//ObjectFlow"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="in" ordered="false" lowerBound="1"
+          eType="#//Aadl/ParameterConnectionEnd" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="out" ordered="false"
+          lowerBound="1" eType="#//Aadl/ParameterConnectionEnd" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="inContext" ordered="false"
+          eType="#//Aadl/ParameterConnectionContext" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="outContext" ordered="false"
+          eType="#//Aadl/ParameterConnectionContext" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ParameterConnectionEnd" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ParameterConnectionContext" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="CallSequenceDescribable">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedCallSequence" ordered="false"
+          upperBound="-1" eType="#//Aadl/CallSequence" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="CallSequence">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Activity" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Activity"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedSubprogramCall"
+          ordered="false" lowerBound="1" upperBound="-1" eType="#//Aadl/SubprogramCall"
+          volatile="true" transient="true" derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="first" ordered="false"
+          lowerBound="1" eType="#//Aadl/SubprogramCall" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SubprogramCall" abstract="true" eSuperTypes="#//Aadl/ParameterConnectionContext">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="last" ordered="false"
+          eType="#//Aadl/SubprogramCall" volatile="true" transient="true" derived="true"
+          eOpposite="#//Aadl/SubprogramCall/next"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="next" ordered="false"
+          eType="#//Aadl/SubprogramCall" volatile="true" transient="true" derived="true"
+          eOpposite="#//Aadl/SubprogramCall/last"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SubprogramType" eSuperTypes="#//Aadl/ComponentType #//Aadl/AnnexContaining #//Aadl/DataAccessContaining #//Aadl/ParameterContaining #//Aadl/PortContaining #//Aadl/SubprogramAccessContaining #//Aadl/SubprogramClassifier">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Activity" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Activity"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ParameterContaining" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedParameter" ordered="false"
+          upperBound="-1" eType="#//Aadl/Parameter" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="Parameter" eSuperTypes="#//Aadl/Feature #//Aadl/ParameterConnectionEnd">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="direction" ordered="false"
+          lowerBound="1" eType="ecore:EEnum ../org.eclipse.uml2.uml/model/UML.ecore#//ParameterDirectionKind"
+          volatile="true" transient="true" derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Parameter" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Parameter"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="type" ordered="false"
+          lowerBound="1" eType="#//Aadl/DataClassifier" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SystemImplementation" eSuperTypes="#//Aadl/ComponentImplementation ../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//blocks/Block #//Aadl/AnnexContaining #//Aadl/BusAccessConnectionContaining #//Aadl/BusContaining #//Aadl/DataAccessConnectionContaining #//Aadl/DataContaining #//Aadl/DeviceContaining #//Aadl/MemoryContaining #//Aadl/PortConnectionContaining #//Aadl/ProcessContaining #//Aadl/ProcessorContaining #//Aadl/SubprogramAccessConnectionContaining #//Aadl/SubprogramContaining #//Aadl/SystemClassifier #//Aadl/SystemContaining"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ProcessContaining" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedProcessSubcomponent"
+          ordered="false" upperBound="-1" eType="#//Aadl/ProcessSubcomponent" volatile="true"
+          transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ProcessSubcomponent" eSuperTypes="#//Aadl/SubcomponentClassifier">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="type" ordered="false"
+          lowerBound="1" eType="#//Aadl/ProcessClassifier" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ProcessorContaining" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedProcessorSubcomponent"
+          ordered="false" upperBound="-1" eType="#//Aadl/ProcessorSubcomponent" volatile="true"
+          transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ProcessorSubcomponent" eSuperTypes="#//Aadl/SubcomponentClassifier">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="type" ordered="false"
+          lowerBound="1" eType="#//Aadl/ProcessorClassifier" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SystemContaining" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedSystemSubcomponent"
+          ordered="false" upperBound="-1" eType="#//Aadl/SystemSubcomponent" volatile="true"
+          transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SystemSubcomponent" eSuperTypes="#//Aadl/SubcomponentClassifier">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="type" ordered="false"
+          lowerBound="1" eType="#//Aadl/SystemClassifier" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="DeviceContaining">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedDeviceSubcomponent"
+          ordered="false" upperBound="-1" eType="#//Aadl/DeviceSubcomponent" volatile="true"
+          transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="DeviceSubcomponent" eSuperTypes="#//Aadl/SubcomponentClassifier">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="type" ordered="false"
+          lowerBound="1" eType="#//Aadl/DeviceClassifier" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SystemType" eSuperTypes="../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//blocks/Block #//Aadl/ComponentType #//Aadl/AnnexContaining #//Aadl/BusAccessContaining #//Aadl/DataAccessContaining #//Aadl/PortContaining #//Aadl/SubprogramAccessContaining #//Aadl/SystemClassifier"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ThreadImplementation" eSuperTypes="#//Aadl/ComponentImplementation ../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//blocks/Block #//Aadl/AnnexContaining #//Aadl/CallSequenceDescribable #//Aadl/DataAccessConnectionContaining #//Aadl/DataContaining #//Aadl/ParameterConnectionContaining #//Aadl/PortConnectionContaining #//Aadl/SubprogramAccessConnectionContaining #//Aadl/SubprogramContaining #//Aadl/ThreadClassifier"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ThreadType" eSuperTypes="../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//blocks/Block #//Aadl/ComponentType #//Aadl/AnnexContaining #//Aadl/DataAccessContaining #//Aadl/PortContaining #//Aadl/SubprogramAccessContaining #//Aadl/ThreadClassifier"/>
+    <eClassifiers xsi:type="ecore:EClass" name="DataPort" eSuperTypes="#//Aadl/Port #//Aadl/ParameterConnectionEnd">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="type" ordered="false"
+          lowerBound="1" eType="#//Aadl/DataClassifier" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="EventDataPort" eSuperTypes="#//Aadl/DataPort #//Aadl/EventPort"/>
+    <eClassifiers xsi:type="ecore:EClass" name="NormalMode" eSuperTypes="#//Aadl/Mode">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_State" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//State"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="InitialMode" eSuperTypes="#//Aadl/Mode">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Pseudostate" ordered="false"
+          lowerBound="1" eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Pseudostate"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SubprogramInstanceCall" eSuperTypes="#//Aadl/SubprogramCall">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_CallBehaviorAction"
+          ordered="false" eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//CallBehaviorAction"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="subprogramInstance" ordered="false"
+          lowerBound="1" eType="#//Aadl/SubprogramInstance"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SubprogramInterfaceCall" eSuperTypes="#//Aadl/SubprogramCall">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_CallOperationAction"
+          ordered="false" eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//CallOperationAction"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="subprogramInterface"
+          ordered="false" lowerBound="1" eType="#//Aadl/SubprogramInterface"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="context" ordered="false"
+          eType="#//Aadl/SubprogramCallContext"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="AadlModel">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedClassifier" ordered="false"
+          upperBound="-1" eType="#//Aadl/Classifier" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Package" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Package"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="importEMLibrary" ordered="false"
+          upperBound="-1" eType="ecore:EClass ../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"
+          volatile="true" transient="true" derived="true"/>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="EM" nsURI="http://smbody/esysml/2.0/ESysML/EM" nsPrefix="NEsysml.EM">
+    <eClassifiers xsi:type="ecore:EClass" name="ErrorModelLibrary">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedBehaviors" ordered="false"
+          upperBound="-1" eType="#//EM/ErrorBehaviorStateMachine" volatile="true"
+          transient="true" derived="true" eOpposite="#//EM/ErrorBehaviorStateMachine/inPackage"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedErrorType" ordered="false"
+          upperBound="-1" eType="#//EM/ErrorType" volatile="true" transient="true"
+          derived="true" eOpposite="#//EM/ErrorType/inLibrary"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="import" ordered="false"
+          upperBound="-1" eType="#//EM/ErrorModelLibrary" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Package" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Package"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ErrorBehaviorStateMachine" eSuperTypes="#//EM/ErrorBehavior">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="inPackage" ordered="false"
+          lowerBound="1" eType="#//EM/ErrorModelLibrary" volatile="true" transient="true"
+          derived="true" eOpposite="#//EM/ErrorModelLibrary/ownedBehaviors"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ErrorBehavior" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_StateMachine" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//StateMachine"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedEvent" ordered="false"
+          upperBound="-1" eType="#//EM/ErrorBehaviorEvent" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedState" ordered="false"
+          upperBound="-1" eType="#//EM/ErrorBehaviorState" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedTransition" ordered="false"
+          upperBound="-1" eType="#//EM/ErrorBehaviorTransition" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="useType" ordered="false"
+          upperBound="-1" eType="#//EM/ErrorModelLibrary" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ErrorBehaviorEvent" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_ChangeEvent" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//ChangeEvent"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ErrorBehaviorState" eSuperTypes="#//EM/ErrorTypedElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_State" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//State"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isInitial" ordered="false"
+          lowerBound="1" eType="ecore:EDataType ../org.eclipse.uml2.types/model/Types.ecore#//Boolean"
+          volatile="true" transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ErrorTypedElement" abstract="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedErrorType" ordered="false"
+          upperBound="-1" eType="#//EM/ErrorType"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ErrorType">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_DataType" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//DataType"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="extension" ordered="false"
+          eType="#//EM/ErrorType" volatile="true" transient="true" derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="inLibrary" ordered="false"
+          lowerBound="1" eType="#//EM/ErrorModelLibrary" volatile="true" transient="true"
+          derived="true" eOpposite="#//EM/ErrorModelLibrary/ownedErrorType"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ErrorBehaviorTransition">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Transition" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Transition"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="from" ordered="false"
+          lowerBound="1" eType="#//EM/ErrorBehaviorState" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="to" ordered="false" lowerBound="1"
+          eType="#//EM/ErrorBehaviorState" volatile="true" transient="true" derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="transCondition" ordered="false"
+          eType="#//EM/ErrorBehaviorTransitionCondition" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="typeSetConstraint" ordered="false"
+          upperBound="-1" eType="#//EM/ErrorType"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="typeSet" ordered="false"
+          upperBound="-1" eType="#//EM/ErrorType"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedBranches" ordered="false"
+          upperBound="-1" eType="#//EM/TransitionBranch" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ErrorBehaviorTransitionCondition">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Activity" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Activity"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="expression" ordered="false"
+          eType="#//EM/ErrorBehaviorTransitionExpression" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ErrorBehaviorTransitionExpression"
+        abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="TransitionBranch" eSuperTypes="#//EM/ErrorTypedElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Transition" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Transition"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="probability" ordered="false"
+          lowerBound="1" eType="ecore:EDataType ../org.eclipse.uml2.types/model/Types.ecore#//Real"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isOthers" ordered="false"
+          lowerBound="1" eType="ecore:EDataType ../org.eclipse.uml2.types/model/Types.ecore#//Boolean"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="target" ordered="false"
+          lowerBound="1" eType="#//EM/ErrorBehaviorState" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ErrorEvent" eSuperTypes="#//EM/ErrorBehaviorEvent #//EM/ErrorTypedElement"/>
+    <eClassifiers xsi:type="ecore:EClass" name="RepairEvent" eSuperTypes="#//EM/ErrorBehaviorEvent"/>
+    <eClassifiers xsi:type="ecore:EClass" name="RecoverEvent" eSuperTypes="#//EM/ErrorBehaviorEvent"/>
+    <eClassifiers xsi:type="ecore:EClass" name="ErrorEventTrigger" eSuperTypes="#//EM/ErrorTransitionTrigger">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="errorEvent" ordered="false"
+          lowerBound="1" eType="#//EM/ErrorEvent" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ErrorTransitionTrigger" abstract="true"
+        eSuperTypes="#//EM/ErrorTypedElement">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Trigger" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Trigger"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ErrorBehaviorTransitionOrExpression"
+        eSuperTypes="#//EM/ErrorBehaviorTransitionExpression">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_AcceptEventAction"
+          ordered="false" eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//AcceptEventAction"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="oprands" ordered="false"
+          upperBound="-1" eType="#//EM/ErrorTransitionTrigger" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="PropagationPointTrigger" eSuperTypes="#//EM/ErrorTransitionTrigger">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="context" ordered="false"
+          lowerBound="1" eType="ecore:EClass ../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="point" ordered="false"
+          lowerBound="1" eType="#//EM/ErrorPropagationPoint" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ErrorPropagationPoint" eSuperTypes="#//EM/ErrorTypedElement ../org.eclipse.papyrus.sysml14/resources/profile/sysml.ecore#//portsandflows/ProxyPort">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="bindFeature" ordered="false"
+          lowerBound="1" eType="ecore:EClass ../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"
+          volatile="true" transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ErrorBehaviorTransitionAndExpression"
+        eSuperTypes="#//EM/ErrorBehaviorTransitionExpression">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_JoinNode" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//JoinNode"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedExpression" ordered="false"
+          upperBound="-1" eType="#//EM/ErrorBehaviorTransitionExpression" volatile="true"
+          transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ComponentErrorBehavior" eSuperTypes="#//EM/ErrorBehavior">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="importBehavior" ordered="false"
+          lowerBound="1" eType="#//EM/ErrorBehaviorStateMachine"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedErrorPropagation"
+          ordered="false" upperBound="-1" eType="#//EM/ErrorPropagation" volatile="true"
+          transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ErrorPropagation" eSuperTypes="#//EM/ErrorBehaviorTransition">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="target" ordered="false"
+          lowerBound="1" eType="#//EM/ErrorPropagationPoint" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ErrorModelSubclause">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Class" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Class"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedPropagationPoint"
+          ordered="false" upperBound="-1" eType="#//EM/ErrorPropagationPoint" volatile="true"
+          transient="true" derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedBehavior" ordered="false"
+          lowerBound="1" eType="#//EM/ComponentErrorBehavior" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="useTypes" ordered="false"
+          upperBound="-1" eType="#//EM/ErrorModelLibrary" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="BA" nsURI="http://smbody/esysml/2.0/ESysML/BA" nsPrefix="NEsysml.BA">
+    <eClassifiers xsi:type="ecore:EClass" name="BehaviorStateMachine" eSuperTypes="#//Aadl/Annex">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_StateMachine" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//StateMachine"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedState" ordered="false"
+          lowerBound="1" upperBound="-1" eType="#//BA/BehaviorState" volatile="true"
+          transient="true" derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedTransition" ordered="false"
+          upperBound="-1" eType="#//BA/BehaviorStateTransition" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedVariable" ordered="false"
+          upperBound="-1" eType="#//BA/Variable" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="BehaviorState">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_State" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//State"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isComplete" ordered="false"
+          lowerBound="1" eType="ecore:EDataType ../org.eclipse.uml2.types/model/Types.ecore#//Boolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isInitial" ordered="false"
+          lowerBound="1" eType="ecore:EDataType ../org.eclipse.uml2.types/model/Types.ecore#//Boolean"
+          volatile="true" transient="true" derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isFinal" ordered="false"
+          lowerBound="1" eType="ecore:EDataType ../org.eclipse.uml2.types/model/Types.ecore#//Boolean"
+          volatile="true" transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="BehaviorStateTransition">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Transition" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Transition"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="from" ordered="false"
+          lowerBound="1" eType="#//BA/BehaviorState" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="to" ordered="false" lowerBound="1"
+          eType="#//BA/BehaviorState" volatile="true" transient="true" derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedActionBlock" ordered="false"
+          lowerBound="1" eType="#//BA/BehaviorActionBlock" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedCondition" ordered="false"
+          lowerBound="1" eType="#//BA/TransitionCondition" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="BehaviorActionBlock">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Activity" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Activity"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ownedAction" ordered="false"
+          upperBound="-1" eType="#//BA/BehaviorAction" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="firstAction" ordered="false"
+          lowerBound="1" eType="#//BA/BehaviorAction" volatile="true" transient="true"
+          derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="BehaviorAction" abstract="true" eSuperTypes="#//Aadl/SubprogramCall">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="parameter" ordered="false"
+          upperBound="-1" eType="ecore:EDataType ../org.eclipse.uml2.types/model/Types.ecore#//String"
+          volatile="true" transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="TransitionCondition" abstract="true"/>
+    <eClassifiers xsi:type="ecore:EClass" name="Variable">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="type" ordered="false"
+          eType="#//Aadl/DataClassifier"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="primitiveType" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//PrimitiveType"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false"
+          lowerBound="1" eType="ecore:EDataType ../org.eclipse.uml2.types/model/Types.ecore#//String"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="PortAction" abstract="true" eSuperTypes="#//BA/BehaviorAction">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="port" ordered="false"
+          lowerBound="1" eType="#//Aadl/Port" volatile="true" transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SendOutput" eSuperTypes="#//BA/PortAction">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_SendSignalAction"
+          ordered="false" eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//SendSignalAction"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="GetInput" eSuperTypes="#//BA/PortAction">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_AcceptEventAction"
+          ordered="false" eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//AcceptEventAction"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SubprogramCallAction" abstract="true"
+        eSuperTypes="#//BA/BehaviorAction"/>
+    <eClassifiers xsi:type="ecore:EClass" name="TextCondition" eSuperTypes="#//BA/TransitionCondition">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Constraint" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Constraint"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="DispatchCondition" eSuperTypes="#//BA/TransitionCondition">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="base_Trigger" ordered="false"
+          eType="ecore:EClass ../org.eclipse.uml2.uml/model/UML.ecore#//Trigger"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isTimeout" ordered="false"
+          lowerBound="1" eType="ecore:EDataType ../org.eclipse.uml2.types/model/Types.ecore#//Boolean"
+          volatile="true" transient="true" derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="dispatchPort" ordered="false"
+          upperBound="-1" eType="#//Aadl/EventPort" volatile="true" transient="true"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="dispatchSubprogramAccess"
+          ordered="false" upperBound="-1" eType="#//Aadl/SubprogramAccess" volatile="true"
+          transient="true" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SubprogramInstanceCallAction" eSuperTypes="#//Aadl/SubprogramInstanceCall #//BA/SubprogramCallAction"/>
+    <eClassifiers xsi:type="ecore:EClass" name="SubprogramInterfaceCallAction" eSuperTypes="#//Aadl/SubprogramInterfaceCall #//BA/SubprogramCallAction"/>
+  </eSubpackages>
+</ecore:EPackage>

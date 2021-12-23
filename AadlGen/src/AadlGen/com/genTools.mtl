@@ -1,0 +1,511 @@
+[comment encoding = UTF-8 /]
+[module genTools('http://aadl.info/AADL/2.0','https://github.com/osate/osate2-ba.git/aadlba', 'http://www.aadl.info/EMV2')]
+
+[import AadlGen::com::queryUtil/]
+
+[template public genExtension(aadlPackage : AadlPackage, type : ComponentType) ? (not type.ownedExtension.oclIsUndefined())]
+ extends [type.ownedExtension.extended.qualifiedName/]
+[/template]
+
+[template public genExtension(aadlPackage : AadlPackage, type : ComponentImplementation) ? (not type.ownedExtension.oclIsUndefined())]
+ extends [type.ownedExtension.extended.qualifiedName/]
+[/template]
+
+[template public genModes(aadlPackage : AadlPackage, classifier : ComponentClassifier) ? (classifier.ownedMode->notEmpty() or classifier.ownedModeTransition->notEmpty()) post (trim())]
+modes
+	[genModes(classifier.ownedMode)/]
+	[genTransitions(classifier.ownedModeTransition)/]
+[/template]
+
+[template public genCalls(aadlPackage : AadlPackage, callSequences : Set(SubprogramCallSequence)) ? (callSequences->notEmpty()) post (trim())]
+calls
+	[for (callSequence : SubprogramCallSequence | callSequences)]
+	[genCallSequence(aadlPackage, callSequence)/]
+	[/for]
+[/template]
+
+[comment]system[/comment]
+[template public genSystemFeature(aadlPackage : AadlPackage, system : SystemType) ? (system.ownedFeature->notEmpty()) post (trim())]
+features
+	[genPorts(aadlPackage, system.ownedEventPort)/][genPorts(aadlPackage, system.ownedDataPort)/][genPorts(aadlPackage, system.ownedEventDataPort)/]
+	[genSubprogramAccesses(aadlPackage, system.ownedSubprogramAccess)/]
+	[genBusAccesses(aadlPackage, system.ownedBusAccess)/]
+[/template]
+
+[template public genSystemSubcomponent(aadlPackage : AadlPackage, system : SystemImplementation) ? (system.ownedSubcomponent->notEmpty()) post (trim())]
+subcomponents
+	[genSubcomponents(aadlPackage, system.ownedSystemSubcomponent)/]
+	[genSubcomponents(aadlPackage, system.ownedProcessSubcomponent)/]
+	[genSubcomponents(aadlPackage, system.ownedDeviceSubcomponent)/]
+	[genSubcomponents(aadlPackage, system.ownedSubprogramSubcomponent)/]
+[/template]
+
+[comment]device[/comment]
+[template public genDeviceFeature(aadlPackage : AadlPackage, device : DeviceType) ? (device.ownedFeature->notEmpty()) post (trim())]
+features
+	[genPorts(aadlPackage, device.ownedEventPort)/][genPorts(aadlPackage, device.ownedDataPort)/][genPorts(aadlPackage, device.ownedEventDataPort)/]
+	[genSubprogramAccesses(aadlPackage, device.ownedSubprogramAccess)/]
+	[genBusAccesses(aadlPackage, device.ownedBusAccess)/]
+[/template]
+
+[template public genDeviceSubcomponent(aadlPackage : AadlPackage, device : DeviceImplementation) ? (device.ownedSubcomponent->notEmpty()) post (trim())]
+subcomponents
+[/template]
+
+[comment]bus[/comment]
+[template public genBusFeature(aadlPackage : AadlPackage, bus : BusType) ? (bus.ownedFeature->notEmpty()) post (trim())]
+features
+	[genBusAccesses(aadlPackage, bus.ownedBusAccess)/]
+[/template]
+
+
+[comment]process[/comment]
+[template public genProcessFeature(aadlPackage : AadlPackage, process : ProcessType) ? (process.ownedFeature->notEmpty()) post (trim())]
+features
+	[genPorts(aadlPackage, process.ownedEventPort)/][genPorts(aadlPackage, process.ownedDataPort)/][genPorts(aadlPackage, process.ownedEventDataPort)/]
+	[genSubprogramAccesses(aadlPackage, process.ownedSubprogramAccess)/]
+[/template]
+
+[template public genProcessSubcomponent(aadlPackage : AadlPackage, process : ProcessImplementation) ? (process.ownedThreadSubcomponent->notEmpty() or process.ownedDataSubcomponent->notEmpty()) post (trim())]
+subcomponents
+	[genSubcomponents(aadlPackage, process.ownedThreadSubcomponent)/]
+	[genSubcomponents(aadlPackage, process.ownedDataSubcomponent)/]
+[/template]
+
+[comment]thread[/comment]
+[template public genThreadFeature(aadlPackage : AadlPackage, thread : ThreadType) ? (thread.ownedFeature->notEmpty()) post (trim())]
+features
+	[genPorts(aadlPackage, thread.ownedEventPort)/][genPorts(aadlPackage, thread.ownedDataPort)/][genPorts(aadlPackage, thread.ownedEventDataPort)/]
+	[genSubprogramAccesses(aadlPackage, thread.ownedSubprogramAccess)/]
+[/template]
+
+[template public genThreadSubcomponent(aadlPackage : AadlPackage, thread : ThreadImplementation) ? (thread.ownedDataSubcomponent->notEmpty()) post (trim())]
+subcomponents
+	[genSubcomponents(aadlPackage, thread.ownedDataSubcomponent)/]
+[/template]
+
+[comment]subprogram[/comment]
+[template public genSubprogramFeature(aadlPackage : AadlPackage, subprogram : SubprogramType) ? (subprogram.ownedFeature->notEmpty()) post (trim())]
+features
+	[genPorts(aadlPackage, subprogram.ownedEventPort)/][genPorts(aadlPackage, subprogram.ownedEventDataPort)/]
+	[genParameters(aadlPackage, subprogram.ownedParameter)/]
+	[genSubprogramAccesses(aadlPackage, subprogram.ownedSubprogramAccess)/]
+[/template]
+
+[template public genSubprogramSubcomponent(aadlPackage : AadlPackage, subprogram : SubprogramImplementation) ? (subprogram.ownedDataSubcomponent->notEmpty()) post (trim())]
+subcomponents
+[comment]	[genSubcomponents(aadlPackage, thread.ownedDataSubcomponent)/][/comment]
+[/template]
+
+[comment]data[/comment]
+[template public genDataFeature(aadlPackage : AadlPackage, data : DataType) ? (data.ownedFeature->notEmpty()) post (trim())]
+features
+	[genSubprogramAccesses(aadlPackage, data.ownedSubprogramAccess)/]
+[/template]
+
+[template public genDataSubcomponent(aadlPackage : AadlPackage, data : DataImplementation) ? (data.ownedDataSubcomponent->notEmpty()) post (trim())]
+subcomponents
+	[genSubcomponents(aadlPackage, data.ownedDataSubcomponent)/]
+[/template]
+
+[comment]ports[/comment]
+[template public genPorts(aadlPackage : AadlPackage, ports : Set(Port)) ? (ports->notEmpty())]
+[for (port : Port | ports)]
+[genPort(aadlPackage, port)/]
+[/for]
+[/template]
+
+[template public genPort(aadlPackage : AadlPackage, port : Port) post (trim())]
+[port.name/]:[if (port._in)] in[/if][if (port.out)] out[/if] [getPortLitera(port)/][genPortReference(aadlPackage, port)/];
+[/template]
+
+[template public genPortReference(aadlPackage : AadlPackage, port : Port)]
+ [genDataPortReference(aadlPackage, port)/][genEventDataPortReference(aadlPackage, port)/]
+[/template]
+
+[template public genDataPortReference(aadlPackage : AadlPackage, port : Port) ? (port.oclIsKindOf(DataPort))]
+[port.oclAsType(DataPort).dataFeatureClassifier.qualifiedName/]
+[/template]
+
+[template public genEventDataPortReference(aadlPackage : AadlPackage, port : Port) ? (port.oclIsKindOf(EventDataPort))]
+[port.oclAsType(EventDataPort).dataFeatureClassifier.qualifiedName/]
+[/template]
+
+[template public genPortReference(aadlPackage : AadlPackage, type : DataSubcomponentType) ? (not type->oclIsUndefined())]
+ [type.qualifiedName/]
+[/template]
+
+[comment]parameters[/comment]
+[template public genParameters(aadlPackage : AadlPackage, parameters : Set(Parameter)) ? (parameters->notEmpty())]
+[for (parameter : Parameter | parameters)]
+[genParameter(aadlPackage, parameter)/]
+[/for]
+[/template]
+
+[template public genParameter(aadlPackage : AadlPackage, parameter : Parameter) post (trim())]
+[parameter.name/]:[if (parameter._in)] in[/if][if (parameter.out)] out[/if] parameter [parameter.dataFeatureClassifier.qualifiedName/];
+[/template]
+
+[comment]subprogramAccesses[/comment]
+[template public genSubprogramAccesses(aadlPackage : AadlPackage, accesses : Set(SubprogramAccess)) ? (accesses->notEmpty())]
+[for (access : SubprogramAccess | accesses)]
+[genSubprogramAccess(aadlPackage, access)/]
+[/for]
+[/template]
+
+[template public genSubprogramAccess(aadlPackage : AadlPackage, access : SubprogramAccess) post (trim())]
+[access.name/]:[if (access.kind = AccessType::provides)] provides[/if][if (access.kind = AccessType::requires)] requires[/if] subprogram access [access.subprogramFeatureClassifier.qualifiedName/];
+[/template]
+
+[comment]busAccesses[/comment]
+[template public genBusAccesses(aadlPackage : AadlPackage, accesses : Set(BusAccess)) post (trim())]
+[for (access : BusAccess | accesses)]
+[genBusAccess(aadlPackage, access)/]
+[/for]
+[/template]
+
+[template public genBusAccess(aadlPackage : AadlPackage, access : BusAccess) post (trim())]
+[access.name/]:[if (access.kind = AccessType::provides)] provides[/if][if (access.kind = AccessType::requires)] requires[/if] bus access [access.busFeatureClassifier.oclAsType(NamedElement).qualifiedName/];
+[/template]
+
+[comment]subcomponents[/comment]
+[template public genSubcomponents(aadlPackage : AadlPackage,components : Set(Subcomponent)) ? (components->notEmpty())]
+[for (component : Subcomponent | components)]
+[genSubcomponent(aadlPackage, component)/]
+[/for]
+[/template]
+
+[template public genSubcomponent(aadlPackage : AadlPackage,component : Subcomponent)]
+[component.name/]: [getSubComponentLitera(component)/] [component.classifier.qualifiedName/];
+[/template]
+
+[comment]connections[/comment]
+[template public genConnections(implementation : ComponentImplementation) ? (implementation.ownedConnection->notEmpty()) post (trim())]
+connections
+	[genPortConnections(implementation.ownedConnection)/]
+	[genParameterConnections(implementation.ownedConnection)/]
+	[genAccessConnections(implementation.ownedConnection)/]
+[/template]
+
+[template public genPortConnections(connections : Set(Connection)) ? (connections->notEmpty())]
+[for (connection : PortConnection | connections->select(conn | conn.oclIsKindOf(PortConnection)).oclAsType(PortConnection))]
+[genPortConnection(connection)/]
+[/for]
+[/template]
+
+[template public genAccessConnections(connections : Set(Connection)) ? (connections->notEmpty())]
+[for (connection : AccessConnection | connections->select(conn | conn.oclIsKindOf(AccessConnection)).oclAsType(AccessConnection))]
+[genAccessConnection(connection)/]
+[/for]
+[/template]
+
+[template public genParameterConnections(connections : Set(Connection)) ? (connections->notEmpty())]
+[for (connection : ParameterConnection | connections->select(conn | conn.oclIsKindOf(ParameterConnection)).oclAsType(ParameterConnection))]
+[genParameterConnection(connection)/]
+[/for]
+[/template]
+
+[template public genPortConnection(connection : PortConnection)]
+[connection.name/]: port [genConnectionEnd(connection.source)/] [if (connection.bidirectional)]<[/if]-> [genConnectionEnd(connection.destination)/];
+[/template]
+
+[template public genAccessConnection(connection : AccessConnection)]
+[connection.name/]: [if (connection.accessCategory = AccessCategory::bus)]bus [elseif (connection.accessCategory = AccessCategory::data)]data [elseif (connection.accessCategory = AccessCategory::subprogram)]subprogram [/if]access [genConnectionEnd(connection.source)/] [if (connection.bidirectional)]<[/if]-> [genConnectionEnd(connection.destination)/];
+[/template]
+
+[template public genParameterConnection(connection : ParameterConnection)]
+[connection.name/]: parameter [genConnectionEnd(connection.source)/] [if (connection.bidirectional)]<[/if]-> [genConnectionEnd(connection.destination)/];
+[/template]
+
+[template public genConnectionEnd(element : ConnectedElement)]
+[if (not element._context.oclIsUndefined())][element._context.name/].[/if][element.connectionEnd.name/]
+[/template]
+
+[comment]modes[/comment]
+[template public genModes(modes : Set(Mode)) ? (modes->notEmpty())]
+[for (mode : Mode | modes)]
+[genMode(mode)/]
+[/for]
+[/template]
+
+[template public genTransitions(transitions : Set(ModeTransition)) ? (transitions->notEmpty())]
+[for (transition : ModeTransition | transitions)]
+[genTransition(transition)/]
+[/for]
+[/template]
+
+[template public genMode(mode : Mode)]
+[mode.name/]:[if (mode.initial)] initial[/if] mode;
+[/template]
+
+[template public genTransition(transition : ModeTransition)]
+[if (not transition.name.oclIsUndefined())][transition.name/]: [/if][transition.source.name/] -['['/] [genTransitionTriggers(transition.ownedTrigger)/] [']'/]-> [transition.destination.name/];
+[/template]
+
+[template public genTransitionTriggers(triggers : Set(ModeTransitionTrigger)) ? (triggers->notEmpty()) post(trim())]
+[for (trigger : ModeTransitionTrigger | triggers) separator(',')]
+[genTransitionTrigger(trigger)/]
+[/for]
+[/template]
+
+[template public genTransitionTrigger(trigger : ModeTransitionTrigger)]
+[if (not trigger._context.oclIsUndefined())][trigger._context.name/].[/if][trigger.triggerPort.name/]
+[/template]
+
+[comment]calls[/comment]
+[template public genCallSequence(aadlPackage : AadlPackage, sequence : SubprogramCallSequence)]
+[sequence.name/]: {
+	[for (call : SubprogramCall | sequence.ownedSubprogramCall)]
+	[genSubprogramCall(aadlPackage, call)/]
+	[/for]
+};
+[/template]
+
+[template public genSubprogramCall(aadlPackage : AadlPackage, call : SubprogramCall)]
+[call.name/]: subprogram [if (not call._context.oclIsUndefined() and call._context.oclIsKindOf(Classifier))][call._context.oclAsType(Classifier).qualifiedName/].[/if][call.calledSubprogram.oclAsType(NamedElement).name/];
+[/template]
+
+[comment]AnnexSubclause[/comment]
+[template public genAnnexSubclauses(aadlPackage : AadlPackage, annexSubclauses : Set(AnnexSubclause))]
+[for (annexSubclause : AnnexSubclause | annexSubclauses)]
+[if (annexSubclause.oclIsKindOf(BehaviorAnnex))][genBehaviorAnnexSubclause(aadlPackage, annexSubclause.oclAsType(BehaviorAnnex))/]
+[elseif (annexSubclause.oclIsKindOf(ErrorModelSubclause))][genErrorModelSubclause(aadlPackage, annexSubclause.oclAsType(ErrorModelSubclause))/][/if]
+[/for]
+[/template]
+
+[comment]BehaviorAnnexSubclause[/comment]
+[template public genBehaviorAnnexSubclause(aadlPackage : AadlPackage, ba : BehaviorAnnex)]
+annex behavior_specification {**
+	[genVariables(aadlPackage, ba.variables)/]
+	[genBehaviorStates(aadlPackage, ba.states)/]
+	[genBehaviorTransitions(aadlPackage, ba.transitions)/]
+**};
+[/template]
+
+[template public genVariables(aadlPackage : AadlPackage, variables : Set(BehaviorVariable))]
+variables
+	[for (variable : BehaviorVariable | variables)]
+	[genVariable(aadlPackage, variable)/]
+	[/for]
+[/template]
+
+[template public genVariable(aadlPackage : AadlPackage, variable : BehaviorVariable)]
+[variable.name/] : [variable.dataClassifier.qualifiedName/];
+[/template]
+
+[template public genBehaviorStates(aadlPackage : AadlPackage, states : Set(BehaviorState))]
+states
+	[for (state : BehaviorState | states)]
+	[genBehaviorState(aadlPackage, state)/]
+	[/for]
+[/template]
+
+[template public genBehaviorState(aadlPackage : AadlPackage, state : BehaviorState)]
+[state.name/] :[if (state.initial)] initial[/if][if (state.complete)] complete[/if][if (state.final)] final[/if] state;
+[/template]
+
+[template public genBehaviorTransitions(aadlPackage : AadlPackage, transitions : Set(BehaviorTransition))]
+transitions
+	[for (transition : BehaviorTransition | transitions)]
+	[genBehaviorTransition(aadlPackage, transition)/]
+	[/for]
+[/template]
+
+[template public genBehaviorTransition(aadlPackage : AadlPackage, transition : BehaviorTransition)]
+[transition.sourceState.name/]-['['/] [genBehaviorCondition(aadlPackage, transition.condition)/] [']'/]-> [transition.destinationState.name/][genActionChecker(aadlPackage, transition)/];
+[/template]
+
+[template public genBehaviorCondition(aadlPackage : AadlPackage, condition : BehaviorCondition) ?(not condition.oclIsUndefined()) post (trim())]
+[if (condition.oclIsKindOf(DispatchCondition))]
+on dispatch [if (condition.oclAsType(DispatchCondition).dispatchTriggerCondition.oclIsKindOf(DispatchRelativeTimeout))]timeout
+[elseif (condition.oclAsType(DispatchCondition).dispatchTriggerCondition.oclIsKindOf(DispatchTriggerLogicalExpression))]
+[genDispatchTriggerLogicalExpression(aadlPackage, condition.oclAsType(DispatchTriggerLogicalExpression))/]
+[/if]
+[elseif (condition.oclIsKindOf(ValueExpression))]
+[for (comm : aadl2::Comment | condition.oclAsType(ValueExpression).ownedComment) separator('or')][comm._body/][/for]
+[/if]
+[/template]
+
+[template public genDispatchTriggerLogicalExpression(aadlPackage : AadlPackage, condition : DispatchTriggerLogicalExpression)]
+[for (conjunction : DispatchConjunction | condition.dispatchConjunctions) separator('or')]
+[for (trigger : DispatchTrigger | conjunction.dispatchTriggers) separator('and')]
+[trigger.oclAsType(EventPortHolder).element.name/]
+[/for]
+[/for]
+[/template]
+
+[template public genActionChecker(aadlPackage : AadlPackage, transition : BehaviorTransition) ? (not transition.actionBlock.oclIsUndefined() and not transition.actionBlock.content.oclIsUndefined()) post (trim())]
+{ [if (transition.actionBlock.content.oclIsKindOf(BehaviorActionSequence))][genBehaviorActions(aadlPackage, transition.actionBlock.content.oclAsType(BehaviorActionSequence).actions)/][elseif (transition.actionBlock.content.oclIsKindOf(BehaviorAction))][genBehaviorAction(aadlPackage, transition.actionBlock.content.oclAsType(BehaviorAction)) /][/if] }
+[/template]
+
+[template public genBehaviorActions(aadlPackage : AadlPackage, actions : Set(BehaviorAction)) ? (actions->size() > 0) post (trim())]
+[for (action : BehaviorAction | actions) separator(';')][genBehaviorAction(aadlPackage, action) /][/for]
+[/template]
+
+[template public genBehaviorAction(aadlPackage : AadlPackage, action : BehaviorAction) post (trim())]
+[if (action.oclIsKindOf(PortSendAction))]
+[action.oclAsType(PortSendAction).port.element.name/]!( [for (holder : GroupHolder | action.oclAsType(PortSendAction).port.groupHolders) separator(',')][holder.element.name/][/for] )
+[elseif (action.oclIsKindOf(PortDequeueAction))]
+[action.oclAsType(PortDequeueAction).port.element.name/]?( [for (holder : GroupHolder | action.oclAsType(PortDequeueAction).port.groupHolders) separator(',')][holder.element.name/][/for] )
+[elseif (action.oclIsKindOf(SubprogramCallAction))]
+[action.oclAsType(SubprogramCallAction).subprogram.element.name/]!( [for (holder : GroupHolder | action.oclAsType(SubprogramCallAction).subprogram.groupHolders) separator(',')][holder.element.name/][/for] )
+[/if]
+[/template]
+
+[comment]ErrorModelAnnexLibrary[/comment]
+[template public genErrorModelLibrary(aadlPackage : AadlPackage, library : ErrorModelLibrary)]
+annex EMV2 {**
+	[genErrorTypes(aadlPackage, library.types)/]
+	[genErrorBehaviorStateMachines(aadlPackage, library.behaviors)/]
+**};
+[/template]
+
+[template public genErrorTypes(aadlPackage : AadlPackage, types : Set(ErrorType))]
+error types
+[for (type : ErrorType | types)]
+	[genErrorType(aadlPackage, type)/]
+[/for]
+end types;
+[/template]
+
+[template public genErrorType(aadlPackage : AadlPackage, type : ErrorType)]
+[type.name/] : type[if (not type.superType.oclIsUndefined())] extends [type.superType.qualifiedName/][/if];
+[/template]
+
+[template public genErrorBehaviorStateMachines(aadlPackage : AadlPackage, stateMachines : Set(ErrorBehaviorStateMachine))]
+[for (stateMachine : ErrorBehaviorStateMachine | stateMachines)][genErrorBehaviorStateMachine(aadlPackage, stateMachine)/]
+[/for]
+[/template]
+
+[template public genErrorBehaviorStateMachine(aadlPackage : AadlPackage, stateMachine : ErrorBehaviorStateMachine)]
+error behavior [stateMachine.name/]
+	[genUseTypes(aadlPackage, stateMachine.useTypes)/]
+	[genErrorBehaviorEvents(aadlPackage, stateMachine.events)/]
+	[genErrorBehaviorStates(aadlPackage, stateMachine.states)/]
+	[genErrorBehaviorTransitions(aadlPackage, stateMachine.transitions)/]
+end behavior;
+[/template]
+
+[template public genErrorBehaviorTransitions(aadlPackage : AadlPackage, transitions : Set(ErrorBehaviorTransition)) ? (transitions->notEmpty())]
+transitions
+[for (transition : ErrorBehaviorTransition | transitions)]
+	[genErrorBehaviorTransition(aadlPackage, transition)/]
+[/for]
+[/template]
+
+[template public genErrorBehaviorTransition(aadlPackage : AadlPackage, transition : ErrorBehaviorTransition)]
+[transition.name/] : [transition.source.name/][genErrorTypeSet(aadlPackage, transition.typeTokenConstraint)/]-['['/] [genErrorBehaviorTransitionCondition(aadlPackage, transition.condition)/] [']'/]->[genErrorBehaviorTransitionTarget(aadlPackage, transition)/];
+[/template]
+
+[template public genErrorBehaviorTransitionTarget(aadlPackage : AadlPackage, transition : ErrorBehaviorTransition) post(trim())]
+[if (not transition.target.oclIsUndefined())][transition.target.name/][genErrorTypeSet(aadlPackage, transition.targetToken)/]
+[else][genErrorBehaviorTransitionBranches(aadlPackage, transition.destinationBranches)/]
+[/if]
+[/template]
+
+[template public genErrorBehaviorTransitionBranches(aadlPackage : AadlPackage, branches : Set(TransitionBranch)) ? (branches->size() > 1) post(trim())]
+( [for (branch : TransitionBranch | branches) separator(',')][genErrorBehaviorTransitionBranch(aadlPackage, branch)/][/for] )
+[/template]
+
+[template public genErrorBehaviorTransitionBranch(aadlPackage : AadlPackage, branch : TransitionBranch) post(trim())]
+[branch.target.name/][genErrorTypeSet(aadlPackage, branch.targetToken)/] with [if (branch.value.others)]others[else][branch.value.realvalue/][/if]
+[/template]
+
+[template public genErrorBehaviorTransitionCondition(aadlPackage : AadlPackage, condition : ConditionExpression) ?(not condition.oclIsUndefined()) post(trim())]
+[if (condition.oclIsTypeOf(AndExpression))]
+[for (expression : ConditionExpression | condition.oclAsType(AndExpression).operands) separator(' and ')][genErrorBehaviorTransitionCondition(aadlPackage, expression)/][/for]
+[elseif (condition.oclIsTypeOf(OrExpression))]
+[for (expression : ConditionExpression | condition.oclAsType(OrExpression).operands) separator(' or ')][genErrorBehaviorTransitionCondition(aadlPackage, expression)/][/for]
+[elseif (condition.oclIsTypeOf(ConditionElement))]
+[if (condition.oclAsType(ConditionElement).qualifiedErrorPropagationReference.emv2Target.namedElement.oclIsKindOf(ErrorBehaviorEvent))][condition.oclAsType(ConditionElement).qualifiedErrorPropagationReference.emv2Target.namedElement.qualifiedName/][else][condition.oclAsType(ConditionElement).qualifiedErrorPropagationReference.emv2Target.namedElement.oclAsType(ErrorPropagation).featureorPPRef.featureorPP.name/][/if][genErrorTypeSet(aadlPackage, condition.oclAsType(ConditionElement).constraint)/]
+[/if]
+[/template]
+
+[template public genErrorBehaviorTransitionConditionElementContainment(path : ContainmentPathElement) ? (not path.oclIsUndefined())]
+[path.namedElement/].
+[/template]
+
+[template public genErrorBehaviorStates(aadlPackage : AadlPackage, states : Set(ErrorBehaviorState)) ? (states->notEmpty())]
+states
+[for (state : ErrorBehaviorState | states)]
+	[genErrorBehaviorState(aadlPackage, state)/]
+[/for]
+[/template]
+
+[template public genErrorBehaviorState(aadlPackage : AadlPackage, state : ErrorBehaviorState)]
+[state.name/] :[if (state.intial)] initial[/if] state[genErrorTypeSet(aadlPackage, state.typeSet)/];
+[/template]
+
+
+[template public genUseTypes(aadlPackage : AadlPackage, librarys : Sequence(ErrorModelLibrary)) ? (librarys->notEmpty())]
+[for (library : ErrorModelLibrary | librarys)]
+[genUseType(aadlPackage, library)/]
+[/for]
+[/template]
+
+[template public genUseType(aadlPackage : AadlPackage, library : ErrorModelLibrary)]
+use types [library.name/];
+[/template]
+
+[template public genErrorBehaviorEvents(aadlPackage : AadlPackage, events : Set(ErrorBehaviorEvent)) ? (events->notEmpty())]
+events
+[for (event : ErrorBehaviorEvent | events)]
+	[genErrorBehaviorEvent(aadlPackage, event)/]
+[/for]
+[/template]
+
+[template public genErrorBehaviorEvent(aadlPackage : AadlPackage, event : ErrorBehaviorEvent)]
+[event.name/] : [if (event.oclIsTypeOf(ErrorEvent))]error[elseif (event.oclIsTypeOf(RepairEvent))]repair[else]recover[/if] event[if (event.oclIsTypeOf(ErrorEvent))][genErrorTypeSet(aadlPackage, event.oclAsType(ErrorEvent).typeSet)/][/if];
+[/template]
+
+[template public genErrorTypeSet(aadlPackage : AadlPackage, typeSet : TypeSet) ? (not typeSet.oclIsUndefined() and typeSet.typeTokens->notEmpty())]
+[for (token : TypeToken | typeSet.typeTokens)][genErrorTypeSet(aadlPackage, token.type)/][/for]
+[/template]
+
+[template public genErrorTypeSet(aadlPackage : AadlPackage, types : Sequence(ErrorTypes)) ? (not types->oclIsUndefined() and types->select(type : ErrorTypes | type.oclIsTypeOf(ErrorType))->size() > 0)]
+{ [for (type : ErrorTypes | types->select(t : ErrorTypes | t.oclIsTypeOf(ErrorType))) separator(',')][type.name/][/for] }
+[/template]
+
+[comment]ErrorModelSubclause[/comment]
+[template public genErrorModelSubclause(aadlPackage : AadlPackage, subclause : ErrorModelSubclause)]
+annex EMV2 {**
+	[genUseTypes(aadlPackage, subclause.useTypes)/]
+	use behavior [getPackageReferenceName(aadlPackage, subclause.useBehavior)/][subclause.useBehavior.name/];
+
+[if (subclause.propagations->size() > 0)]
+	error propagations
+		[genErrorPropagations(aadlPackage, subclause.propagations)/]
+	end propagations;
+[/if]
+
+[if (subclause.events->notEmpty() or subclause.transitions->notEmpty() or subclause.outgoingPropagationConditions->notEmpty())]
+	component error behavior
+		[genErrorBehaviorEvents(aadlPackage, subclause.events)/]
+		[genErrorBehaviorTransitions(aadlPackage, subclause.transitions)/]
+		[genOutgoingPropagationConditions(aadlPackage, subclause.outgoingPropagationConditions)/]
+	end component;
+[/if]
+**};
+[/template]
+
+[template public genErrorPropagations(aadlPackage : AadlPackage, propagations : Set(ErrorPropagation)) ? (propagations->notEmpty()) post(trim())]
+[for (propagation : ErrorPropagation | propagations)]
+[genErrorPropagation(aadlPackage, propagation)/]
+[/for]
+[/template]
+
+[template public genErrorPropagation(aadlPackage : AadlPackage, propagation : ErrorPropagation)]
+[propagation.featureorPPRef.featureorPP.name/] : [if (propagation.direction = DirectionType::_in)]in[else]out[/if] propagation [genErrorTypeSet(aadlPackage, propagation.typeSet)/];
+[/template]
+
+[template public genOutgoingPropagationConditions(aadlPackage : AadlPackage, conditions : Set(OutgoingPropagationCondition)) ? (conditions->notEmpty()) post(trim())]
+propagations
+[for (condition : OutgoingPropagationCondition | conditions)]
+	[genOutgoingPropagationCondition(aadlPackage, condition)/]
+[/for]
+[/template]
+
+[template public genOutgoingPropagationCondition(aadlPackage : AadlPackage, condition : OutgoingPropagationCondition)]
+[if (not condition.name.oclIsUndefined())][condition.name/] : [/if][condition.state.name/][genErrorTypeSet(aadlPackage, condition.typeTokenConstraint)/] -['['/] [genErrorBehaviorTransitionCondition(aadlPackage, condition.condition)/] [']'/]-> [condition.outgoing.featureorPPRef.featureorPP.name/][genErrorTypeSet(aadlPackage, condition.typeToken)/];
+[/template]
+

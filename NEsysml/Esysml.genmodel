@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/uml2/2.2.0/GenModel"
+    modelDirectory="/NEsysml/src" modelPluginID="NEsysml" modelName="Esysml"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.uml2.uml.ecore.importer"
+    complianceLevel="5.0" copyrightFields="false" usedGenPackages="../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../org.eclipse.uml2.uml.profile.standard/model/Standard.genmodel#//standard ../org.eclipse.papyrus.sysml14/resources/profile/SysML.profile.genmodel#//sysml14 ../org.eclipse.uml2.types/model/Types.genmodel#//types ../org.eclipse.uml2.uml/model/UML.genmodel#//uml"
+    operationReflection="true" importOrganizing="true">
+  <genAnnotations source="http://www.eclipse.org/emf/2002/GenModel/importer/org.eclipse.uml2.uml.ecore.importer">
+    <details key="OPPOSITE_ROLE_NAMES" value="IGNORE"/>
+    <details key="DUPLICATE_FEATURES" value="DISCARD"/>
+    <details key="ANNOTATION_DETAILS" value="PROCESS"/>
+    <details key="PROPERTY_DEFAULT_EXPRESSIONS" value="IGNORE"/>
+    <details key="DUPLICATE_FEATURE_INHERITANCE" value="DISCARD"/>
+    <details key="COMMENTS" value="PROCESS"/>
+    <details key="DERIVED_FEATURES" value="PROCESS"/>
+    <details key="SUPER_CLASS_ORDER" value="PROCESS"/>
+    <details key="DUPLICATE_OPERATION_INHERITANCE" value="DISCARD"/>
+    <details key="REDEFINING_OPERATIONS" value="REPORT"/>
+    <details key="INVARIANT_CONSTRAINTS" value="PROCESS"/>
+    <details key="UNION_PROPERTIES" value="REPORT"/>
+    <details key="DUPLICATE_OPERATIONS" value="DISCARD"/>
+    <details key="NON_API_INVARIANTS" value="IGNORE"/>
+    <details key="CAMEL_CASE_NAMES" value="IGNORE"/>
+    <details key="SUBSETTING_PROPERTIES" value="REPORT"/>
+    <details key="OPERATION_BODIES" value="IGNORE"/>
+    <details key="ECORE_TAGGED_VALUES" value="PROCESS"/>
+    <details key="UNTYPED_PROPERTIES" value="REPORT"/>
+    <details key="REDEFINING_PROPERTIES" value="REPORT"/>
+    <details key="INVOCATION_DELEGATES" value="IGNORE"/>
+    <details key="VALIDATION_DELEGATES" value="IGNORE"/>
+  </genAnnotations>
+  <foreignModel>NEsysml.profile.uml</foreignModel>
+  <genPackages xsi:type="genmodel:GenPackage" prefix="NEsysml" disposableProviderFactory="true"
+      ecorePackage="NEsysml.ecore#/">
+    <genEnums xsi:type="genmodel:GenEnum" typeSafeEnumCompatible="false" ecoreEnum="NEsysml.ecore#//Dummy"/>
+    <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="Aadl" basePackage="NEsysml"
+        disposableProviderFactory="true" ecorePackage="NEsysml.ecore#//Aadl">
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/Extension">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/Extension/base_Generalization"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/Implementation">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/Implementation/base_Generalization"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/ComponentType">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ComponentType/extended"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/ComponentClassifier">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ComponentClassifier/ownedErrorModel"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/Classifier"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/ComponentImplementation">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ComponentImplementation/type"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ComponentImplementation/extended"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/BusClassifier"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/PlatformClassifier"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/ModeAvailable">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ModeAvailable/ownedMode"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/ModeStateMachine">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ModeStateMachine/base_StateMachine"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ModeStateMachine/ownedMode"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ModeStateMachine/ownedTransition"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/Mode"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/ModeTransition">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ModeTransition/base_Transition"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ModeTransition/trigger"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ModeTransition/from"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ModeTransition/to"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/ModeTransitionTrigger">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ModeTransitionTrigger/base_Trigger"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ModeTransitionTrigger/port"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ModeTransitionTrigger/context"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/EventPort"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/Port">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/Port/specification"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute NEsysml.ecore#//Aadl/Port/direction"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/Feature"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/PortDataFlowSpecification">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/PortDataFlowSpecification/eventGate"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/DataFlowSpecification">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/DataFlowSpecification/type"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/DataClassifier"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/SoftwareClassifier"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/ModeTransitionTriggerContext"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/DeviceClassifier"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/MemoryClassifier"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/ProcessClassifier"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/ProcessorClassifier"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/SubprogramClassifier"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/SubprogramInstance"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/SystemClassifier"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/ThreadClassifier"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/BusImplementation"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/PortConnectionContaining">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/PortConnectionContaining/ownedPortConnection"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/PortConnection">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/PortConnection/base_Connector"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/PortConnection/in"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/PortConnection/out"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/PortConnection/inContext"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/PortConnection/outContext"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/Connection"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/PortAndAccessConectionContext"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/AnnexContaining">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/AnnexContaining/ownedAnnex"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/Annex"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/BusAccessConnectionContaining">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/BusAccessConnectionContaining/ownedBusConnection"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/BusConnection">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/BusConnection/base_Connector"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/BusConnection/require"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/BusConnection/provide"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/BusConnection/inContext"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/BusConnection/outContext"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/BusAccessConnectionEnd"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/BusType"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/PortContaining">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/PortContaining/ownedport"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/BusAccessContaining">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/BusAccessContaining/ownedBusAccess"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/BusAccess">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/BusAccess/specification"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute NEsysml.ecore#//Aadl/BusAccess/direction"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/BusFlowSpecification">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/BusFlowSpecification/type"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/DataImplementation"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/DataContaining">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/DataContaining/ownedDataSubcomponent"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/DataSubcomponent">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/DataSubcomponent/type"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/SubcomponentClassifier">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SubcomponentClassifier/base_Property"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/DataAccessConnectionEnd"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/SubprogramContaining">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SubprogramContaining/ownedSubprogramSubcomponent"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/SubprogramSubcomponent">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SubprogramSubcomponent/type"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/DataAccessConnectionContaining">
+        <genFeatures xsi:type="genmodel:GenFeature" property="None" children="true"
+            createChild="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/DataAccessConnectionContaining/ownedDataAccessConnection"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/DataAccessConnection">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/DataAccessConnection/require"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/DataAccessConnection/provide"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/DataAccessConnection/inContext"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/DataAccessConnection/outContext"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/SubprogramAccessConnectionContaining">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SubprogramAccessConnectionContaining/ownedSubprogramAccessConnection"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/SubprogramAccessConnection">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SubprogramAccessConnection/base_Connector"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SubprogramAccessConnection/require"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SubprogramAccessConnection/provide"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SubprogramAccessConnection/inContext"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SubprogramAccessConnection/outContext"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/SubprogramAccess">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SubprogramAccess/specification"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute NEsysml.ecore#//Aadl/SubprogramAccess/direction"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SubprogramAccess/type"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/SubprogramInterface"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/SubprogramSpecification"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/DataType"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/SubprogramAccessContaining">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SubprogramAccessContaining/ownedSubprogramAccess"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/DataAccessContaining">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/DataAccessContaining/ownedDataAccess"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/DataAccess">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/DataAccess/specification"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute NEsysml.ecore#//Aadl/DataAccess/direction"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/SubprogramCallContext"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/DeviceImplementation"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/BusContaining">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/BusContaining/ownedBusSubcomponent"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/BusSubcomponent">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/BusSubcomponent/type"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/DeviceType"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/MemoryImplementation"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/MemoryContaining">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/MemoryContaining/ownedMemorySubcomponent"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/MemorySubcomponent">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/MemorySubcomponent/type"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/MemoryType"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/ProcessImplementation"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/ThreadContaining">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ThreadContaining/ownedThreadSubcomponent"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/ThreadSubcomponent">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ThreadSubcomponent/type"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/ProcessorImplementation"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/ProcessorType"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/ProcessType"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/SubprogramImplementation">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SubprogramImplementation/base_Activity"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/ParameterConnectionContaining">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ParameterConnectionContaining/ownedParameterConnection"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/ParameterConnection">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ParameterConnection/base_ObjectFlow"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ParameterConnection/in"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ParameterConnection/out"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ParameterConnection/inContext"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ParameterConnection/outContext"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/ParameterConnectionEnd"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/ParameterConnectionContext"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/CallSequenceDescribable">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/CallSequenceDescribable/ownedCallSequence"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/CallSequence">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/CallSequence/base_Activity"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/CallSequence/ownedSubprogramCall"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/CallSequence/first"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/SubprogramCall">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SubprogramCall/last"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SubprogramCall/next"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/SubprogramType">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SubprogramType/base_Activity"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/ParameterContaining">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ParameterContaining/ownedParameter"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/Parameter">
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute NEsysml.ecore#//Aadl/Parameter/direction"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/Parameter/base_Parameter"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/Parameter/type"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/SystemImplementation"/>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/ProcessContaining">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ProcessContaining/ownedProcessSubcomponent"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/ProcessSubcomponent">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ProcessSubcomponent/type"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/ProcessorContaining">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ProcessorContaining/ownedProcessorSubcomponent"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/ProcessorSubcomponent">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/ProcessorSubcomponent/type"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//Aadl/SystemContaining">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SystemContaining/ownedSystemSubcomponent"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/SystemSubcomponent">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SystemSubcomponent/type"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/DeviceContaining">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/DeviceContaining/ownedDeviceSubcomponent"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/DeviceSubcomponent">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/DeviceSubcomponent/type"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/SystemType"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/ThreadImplementation"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/ThreadType"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/DataPort">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/DataPort/type"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/EventDataPort"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/NormalMode">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/NormalMode/base_State"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/InitialMode">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/InitialMode/base_Pseudostate"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/SubprogramInstanceCall">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SubprogramInstanceCall/base_CallBehaviorAction"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SubprogramInstanceCall/subprogramInstance"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/SubprogramInterfaceCall">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SubprogramInterfaceCall/base_CallOperationAction"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SubprogramInterfaceCall/subprogramInterface"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/SubprogramInterfaceCall/context"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//Aadl/AadlModel">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/AadlModel/ownedClassifier"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/AadlModel/base_Package"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//Aadl/AadlModel/importEMLibrary"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="EM" basePackage="NEsysml"
+        disposableProviderFactory="true" ecorePackage="NEsysml.ecore#//EM">
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//EM/ErrorModelLibrary">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorModelLibrary/ownedBehaviors"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorModelLibrary/ownedErrorType"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorModelLibrary/import"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorModelLibrary/base_Package"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//EM/ErrorBehaviorStateMachine">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorBehaviorStateMachine/inPackage"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//EM/ErrorBehavior">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorBehavior/base_StateMachine"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorBehavior/ownedEvent"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorBehavior/ownedState"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorBehavior/ownedTransition"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorBehavior/useType"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//EM/ErrorBehaviorEvent">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorBehaviorEvent/base_ChangeEvent"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//EM/ErrorBehaviorState">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorBehaviorState/base_State"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute NEsysml.ecore#//EM/ErrorBehaviorState/isInitial"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//EM/ErrorTypedElement">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorTypedElement/ownedErrorType"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//EM/ErrorType">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorType/base_DataType"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorType/extension"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorType/inLibrary"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//EM/ErrorBehaviorTransition">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorBehaviorTransition/base_Transition"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorBehaviorTransition/from"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorBehaviorTransition/to"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorBehaviorTransition/transCondition"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorBehaviorTransition/typeSetConstraint"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorBehaviorTransition/typeSet"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorBehaviorTransition/ownedBranches"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//EM/ErrorBehaviorTransitionCondition">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorBehaviorTransitionCondition/base_Activity"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorBehaviorTransitionCondition/expression"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//EM/ErrorBehaviorTransitionExpression"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//EM/TransitionBranch">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/TransitionBranch/base_Transition"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute NEsysml.ecore#//EM/TransitionBranch/probability"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute NEsysml.ecore#//EM/TransitionBranch/isOthers"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/TransitionBranch/target"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//EM/ErrorEvent"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//EM/RepairEvent"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//EM/RecoverEvent"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//EM/ErrorEventTrigger">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorEventTrigger/errorEvent"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//EM/ErrorTransitionTrigger">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorTransitionTrigger/base_Trigger"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//EM/ErrorBehaviorTransitionOrExpression">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorBehaviorTransitionOrExpression/base_AcceptEventAction"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorBehaviorTransitionOrExpression/oprands"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//EM/PropagationPointTrigger">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/PropagationPointTrigger/context"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/PropagationPointTrigger/point"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//EM/ErrorPropagationPoint">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorPropagationPoint/bindFeature"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//EM/ErrorBehaviorTransitionAndExpression">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorBehaviorTransitionAndExpression/base_JoinNode"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorBehaviorTransitionAndExpression/ownedExpression"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//EM/ComponentErrorBehavior">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ComponentErrorBehavior/importBehavior"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ComponentErrorBehavior/ownedErrorPropagation"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//EM/ErrorPropagation">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorPropagation/target"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//EM/ErrorModelSubclause">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorModelSubclause/base_Class"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorModelSubclause/ownedPropagationPoint"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorModelSubclause/ownedBehavior"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//EM/ErrorModelSubclause/useTypes"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages xsi:type="genmodel:GenPackage" prefix="BA" basePackage="NEsysml"
+        disposableProviderFactory="true" ecorePackage="NEsysml.ecore#//BA">
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//BA/BehaviorStateMachine">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//BA/BehaviorStateMachine/base_StateMachine"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//BA/BehaviorStateMachine/ownedState"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//BA/BehaviorStateMachine/ownedTransition"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//BA/BehaviorStateMachine/ownedVariable"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//BA/BehaviorState">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//BA/BehaviorState/base_State"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute NEsysml.ecore#//BA/BehaviorState/isComplete"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute NEsysml.ecore#//BA/BehaviorState/isInitial"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute NEsysml.ecore#//BA/BehaviorState/isFinal"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//BA/BehaviorStateTransition">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//BA/BehaviorStateTransition/base_Transition"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//BA/BehaviorStateTransition/from"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//BA/BehaviorStateTransition/to"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//BA/BehaviorStateTransition/ownedActionBlock"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//BA/BehaviorStateTransition/ownedCondition"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//BA/BehaviorActionBlock">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//BA/BehaviorActionBlock/base_Activity"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//BA/BehaviorActionBlock/ownedAction"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//BA/BehaviorActionBlock/firstAction"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//BA/BehaviorAction">
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute NEsysml.ecore#//BA/BehaviorAction/parameter"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//BA/TransitionCondition"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//BA/Variable">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//BA/Variable/type"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//BA/Variable/primitiveType"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute NEsysml.ecore#//BA/Variable/name"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//BA/PortAction">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//BA/PortAction/port"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//BA/SendOutput">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//BA/SendOutput/base_SendSignalAction"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//BA/GetInput">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//BA/GetInput/base_AcceptEventAction"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" image="false" ecoreClass="NEsysml.ecore#//BA/SubprogramCallAction"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//BA/TextCondition">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//BA/TextCondition/base_Constraint"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//BA/DispatchCondition">
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//BA/DispatchCondition/base_Trigger"/>
+        <genFeatures xsi:type="genmodel:GenFeature" createChild="false" ecoreFeature="ecore:EAttribute NEsysml.ecore#//BA/DispatchCondition/isTimeout"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//BA/DispatchCondition/dispatchPort"/>
+        <genFeatures xsi:type="genmodel:GenFeature" notify="false" createChild="false"
+            propertySortChoices="true" ecoreFeature="ecore:EReference NEsysml.ecore#//BA/DispatchCondition/dispatchSubprogramAccess"/>
+      </genClasses>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//BA/SubprogramInstanceCallAction"/>
+      <genClasses xsi:type="genmodel:GenClass" ecoreClass="NEsysml.ecore#//BA/SubprogramInterfaceCallAction"/>
+    </nestedGenPackages>
+  </genPackages>
+</genmodel:GenModel>

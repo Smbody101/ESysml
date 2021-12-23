@@ -1,0 +1,159 @@
+/**
+ */
+package NEsysml.Aadl.impl;
+
+import NEsysml.AadlUtil;
+import NEsysml.Aadl.AadlPackage;
+import NEsysml.Aadl.ComponentType;
+import NEsysml.Aadl.SubprogramImplementation;
+import NEsysml.Aadl.SubprogramType;
+
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.papyrus.sysml14.blocks.Block;
+import org.eclipse.uml2.uml.Generalization;
+
+/**
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Component Type</b></em>'.
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * </p>
+ * <ul>
+ *   <li>{@link NEsysml.Aadl.impl.ComponentTypeImpl#getExtended <em>Extended</em>}</li>
+ * </ul>
+ *
+ * @generated
+ */
+public abstract class ComponentTypeImpl extends ComponentClassifierImpl implements ComponentType {
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ComponentTypeImpl() {
+		super();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return AadlPackage.Literals.COMPONENT_TYPE;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ComponentType getExtended() {
+		ComponentType extended = basicGetExtended();
+		return extended != null && extended.eIsProxy() ? (ComponentType)eResolveProxy((InternalEObject)extended) : extended;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public ComponentType basicGetExtended() {
+		// TODO: implement this method to return the 'Extended' reference
+		// -> do not perform proxy resolution
+		// Ensure that you remove @generated or mark it @generated NOT
+		EList<Generalization> generalizations = null;
+		if(this instanceof Block)
+			generalizations = ((Block)this).getBase_Class().getGeneralizations();
+		else if(this instanceof SubprogramType)
+			generalizations = ((SubprogramType)this).getBase_Activity().getGeneralizations();
+		else if(this instanceof SubprogramImplementation)
+			generalizations = ((SubprogramImplementation)this).getBase_Activity().getGeneralizations();
+		else
+			return null;
+
+		for(Generalization g : generalizations)
+			if(AadlUtil.eINSTANCE.isStereotypedBy(g, AadlPackage.Literals.EXTENSION)) {
+				for(EObject object : g.getGeneral().getStereotypeApplications())
+					if(object instanceof ComponentType)
+						return (ComponentType) object;
+			}
+		return null;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setExtended(ComponentType newExtended) {
+		// TODO: implement this method to set the 'Extended' reference
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+		switch (featureID) {
+			case AadlPackage.COMPONENT_TYPE__EXTENDED:
+				if (resolve) return getExtended();
+				return basicGetExtended();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eSet(int featureID, Object newValue) {
+		switch (featureID) {
+			case AadlPackage.COMPONENT_TYPE__EXTENDED:
+				setExtended((ComponentType)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID) {
+		switch (featureID) {
+			case AadlPackage.COMPONENT_TYPE__EXTENDED:
+				setExtended((ComponentType)null);
+				return;
+		}
+		super.eUnset(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID) {
+		switch (featureID) {
+			case AadlPackage.COMPONENT_TYPE__EXTENDED:
+				return basicGetExtended() != null;
+		}
+		return super.eIsSet(featureID);
+	}
+
+} //ComponentTypeImpl

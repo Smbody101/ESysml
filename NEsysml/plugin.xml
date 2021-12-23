@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated Esysml -->
+      <package
+            uri="http://smbody/esysml/2.0/ESysML"
+            class="NEsysml.NEsysmlPackage"
+            genModel="Esysml.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated Esysml -->
+      <package
+            uri="http://smbody/esysml/2.0/ESysML/Aadl"
+            class="NEsysml.Aadl.AadlPackage"
+            genModel="Esysml.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated Esysml -->
+      <package
+            uri="http://smbody/esysml/2.0/ESysML/EM"
+            class="NEsysml.EM.EMPackage"
+            genModel="Esysml.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated Esysml -->
+      <package
+            uri="http://smbody/esysml/2.0/ESysML/BA"
+            class="NEsysml.BA.BAPackage"
+            genModel="Esysml.genmodel"/>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.uri_mapping">
+      <mapping
+            source="pathmap://NESYSML_PROFILE/"
+            target="platform:/plugin/NEsysml/">
+      </mapping>
+   </extension>
+   <extension
+         point="org.eclipse.uml2.uml.generated_package">
+      <package
+            location="pathmap://NESYSML_PROFILE/NEsysml.profile.uml#_CTQboDZWEey8DYqs2rY8iw"
+            uri="http://smbody/esysml/2.0/ESysML/Aadl">
+      </package>
+   </extension>
+   <extension
+         point="org.eclipse.papyrus.uml.extensionpoints.UMLProfile">
+      <profile
+            description="Extended Sysml with AADL"
+            name="NEsysml"
+            path="pathmap://NESYSML_PROFILE/NEsysml.profile.uml"
+            provider="Smbody">
+      </profile>
+   </extension>
+   <extension
+         point="org.eclipse.uml2.uml.generated_package">
+      <package
+            location="pathmap://NESYSML_PROFILE/NEsysml.profile.uml#_zfV_oDf7Eey9iJizgBZH3w"
+            uri="http://smbody/esysml/2.0/ESysML/BA">
+      </package>
+   </extension>
+   <extension
+         point="org.eclipse.uml2.uml.generated_package">
+      <package
+            location="pathmap://NESYSML_PROFILE/NEsysml.profile.uml#_92mH4DrbEeyOuNK7uqDrtg"
+            uri="http://smbody/esysml/2.0/ESysML/EM">
+      </package>
+   </extension>
+
+</plugin>
